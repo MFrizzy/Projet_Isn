@@ -1,5 +1,6 @@
 # Bomberman
 # Fonction qui dessine la  map
+# Ligne de commentaire test pour git
 
 from tkinter import*
 
@@ -27,6 +28,7 @@ def dessiner_map():
     ajouter_brique(0,10)
     ajouter_brique(1,10)
 
+# Toujours une ligne de commentaire test pour git (2)
     
 
 def ajouter_brique(x,y):
