@@ -76,7 +76,7 @@ def animdroite(event):
     place[0]+=1
     for i in range (len(brique)):
         a=brique[i]
-        if place[0]==a[0] and place[1]==a[1]:
+        if place[0]==a[0] and place[1]==a[1] or place[0]==9:
             animgauche(event)
     for i in range (len(bloc)):
         a=bloc[i]
@@ -92,11 +92,9 @@ def animgauche(event):
     can.coords(oeildroit,xj+30,yj+10,xj+40,yj+20)
     can.coords(bouche,xj+15,yj+30,xj+35,yj+35)
     place[0]-=1
-    #if place[0]%2==0 and place[1]%2==0 or place[0]==-1:
-    #animdroite(event)
     for i in range (len(brique)):
         a=brique[i]
-        if place[0]==a[0] and place[1]==a[1]:
+        if place[0]==a[0] and place[1]==a[1] or place[0]==-1:
             animdroite(event)
     for i in range (len(bloc)):
         a=bloc[i]
@@ -112,11 +110,9 @@ def animbas(event):
     can.coords(oeildroit,xj+30,yj+10,xj+40,yj+20)
     can.coords(bouche,xj+15,yj+30,xj+35,yj+35)
     place[1]+=1
-    #if place[0]%2==0 and place[1]%2==0 or place[1]==9:
-    #	animhaut(event)
     for i in range (len(brique)):
         a=brique[i]
-        if place[0]==a[0] and place[1]==a[1]:
+        if place[0]==a[0] and place[1]==a[1] or place[1]==9:
             animhaut(event)
     for i in range (len(bloc)):
         a=bloc[i]
@@ -132,11 +128,9 @@ def animhaut(event):
     can.coords(oeildroit,xj+30,yj+10,xj+40,yj+20)
     can.coords(bouche,xj+15,yj+30,xj+35,yj+35)
     place[1]-=1
-    #if place[0]%2==0 and place[1]%2==0 or place[1]==-1:
-    #	animbas(event)
     for i in range (len(brique)):
         a=brique[i]
-        if place[0]==a[0] and place[1]==a[1]:
+        if place[0]==a[0] and place[1]==a[1] or place[1]==-1:
             animbas(event)
     for i in range (len(bloc)):
         a=bloc[i]
