@@ -12,6 +12,8 @@ fen=Tk()
 fen.title('Personnage')
 can=Canvas(fen, width =550, height =550, bg ='ivory')
 can.pack(side=TOP,padx=5,pady=5)
+bloc=[]
+brique=[]
 
 ### Creation map ###
 
@@ -44,6 +46,7 @@ def ajouter_brique(x,y):
     can.create_line(x*50,50*y+(50/4),x*50+50,y*50+(50/4))
     can.create_line(x*50,50*y+(2*50/4),x*50+50,y*50+(2*50/4))
     can.create_line(x*50,50*y+(3*50/4),x*50+50,y*50+(3*50/4))
+    
 
 def ajouter_bloc(x,y):
     can.create_rectangle(x*50,y*50,x*50+50,y*50+50,fill='black')
