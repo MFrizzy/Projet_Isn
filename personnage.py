@@ -18,22 +18,26 @@ brique=[]
 ### Creation map ###
 
 def dessiner_map():
-    global x,y
+    global x,y,bloc,brique
     for i in range(1,10,2):
         for j in range(1,10,2):
             ajouter_bloc(i,j)
     for j in range(0,11,1):
         for i in range(2,9,2):
             ajouter_brique(i,j)
+            brique.append((j,i))
     for j in range(0,11,2):
         for i in range(3,8,2):
             ajouter_brique(i,j)
+            brique.append((j,i))
     for i in range(2,9,1):
         for j in range(0,11,10):
             ajouter_brique(j,i)
+            brique.append((j,i))
     for i in range(2,9,2):
         for j in range(1,10,8):
             ajouter_brique(j,i)
+            brique.append((j,i))
     ajouter_brique(9,0)
     ajouter_brique(10,0)
     ajouter_brique(10,1)
@@ -42,14 +46,18 @@ def dessiner_map():
     ajouter_brique(1,10)
 
 def ajouter_brique(x,y):
+    global brique
     can.create_rectangle(x*50,y*50,x*50+50,y*50+50,fill="grey")
     can.create_line(x*50,50*y+(50/4),x*50+50,y*50+(50/4))
     can.create_line(x*50,50*y+(2*50/4),x*50+50,y*50+(2*50/4))
     can.create_line(x*50,50*y+(3*50/4),x*50+50,y*50+(3*50/4))
+    brique.append([x,y])
     
 
 def ajouter_bloc(x,y):
+    global bloc
     can.create_rectangle(x*50,y*50,x*50+50,y*50+50,fill='black')
+    bloc.append([x,y])
 
 ### variables joueur ###
 
@@ -111,6 +119,13 @@ def animhaut(event):
    	print(place)
 	
 ### Programme ###
+
+### Test ###
+
+print(bloc)
+print(brique)
+
+### Fin test ###
 
 Quitter=Button(fen,text="Quitter",command=fen.quit)
 Quitter.pack(side=BOTTOM)
