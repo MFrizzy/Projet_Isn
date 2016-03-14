@@ -41,7 +41,8 @@ def ajouter_brique(x,y):
 def ajouter_bloc(x,y):
     can.create_rectangle(x*50,y*50,x*50+50,y*50+50,fill='black')
 
-
+### c'est la bite
+    
 ###### Programme #######
 fen=Tk()
 fen.title('Bomberman')
