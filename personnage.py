@@ -18,26 +18,22 @@ brique=[]
 ### Creation map ###
 
 def dessiner_map():
-    global x,y,bloc,brique
+    global x,y
     for i in range(1,10,2):
         for j in range(1,10,2):
             ajouter_bloc(i,j)
     for j in range(0,11,1):
         for i in range(2,9,2):
             ajouter_brique(i,j)
-            brique.append((j,i))
     for j in range(0,11,2):
         for i in range(3,8,2):
             ajouter_brique(i,j)
-            brique.append((j,i))
     for i in range(2,9,1):
         for j in range(0,11,10):
             ajouter_brique(j,i)
-            brique.append((j,i))
     for i in range(2,9,2):
         for j in range(1,10,8):
             ajouter_brique(j,i)
-            brique.append((j,i))
     ajouter_brique(9,0)
     ajouter_brique(10,0)
     ajouter_brique(10,1)
@@ -122,14 +118,15 @@ def animhaut(event):
 
 ### Test ###
 
-print(bloc)
-print(brique)
+
 
 ### Fin test ###
 
 Quitter=Button(fen,text="Quitter",command=fen.quit)
 Quitter.pack(side=BOTTOM)
 dessiner_map()
+print(bloc)
+print(brique)
 fen.bind("<KeyRelease-Left>",animgauche)
 fen.bind("<KeyRelease-Right>",animdroite)
 fen.bind("<KeyRelease-Up>",animhaut)
