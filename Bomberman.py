@@ -29,6 +29,7 @@ def dessiner_map():
     ajouter_brique(1,10)
 
 # Toujours une ligne de commentaire test pour git (2)
+# Toujours et encore l'inimitable ligne inutile pour le test de merde
     
 
 def ajouter_brique(x,y):
