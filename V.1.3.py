@@ -14,6 +14,8 @@ fen.title('BOMBERMAN')
 can=Canvas(fen, width =550, height =550, bg ='ivory')
 can.pack(side=TOP,padx=5,pady=5)
 
+Victoire=0
+
 ### Creation map ###
 
 def dessiner_map():
@@ -91,6 +93,7 @@ def bombe1(event):
     explosion(a,b,1)
 
 def explosion(xj,yj,joueur):
+    global Victoire
     print(can.find_overlapping(xj,yj,xj+50,yj+50))
     destroy=[]
     a1=can.find_overlapping(xj-1,yj,xj+51,yj+50)
@@ -100,17 +103,30 @@ def explosion(xj,yj,joueur):
         for j in range (len(b)):
             if  a1[i]==b[j]:
                 destroy.append(b[j])
+            if a1[i]==1 and joueur==2:
+                Victoire=2              
+            if a1[i]==2 and joueur==1:
+                Victoire=1
     for i in range (len(a2)):
         for j in range(len(b)):
             if a2[i]==b[j]:
                 destroy.append(b[j])
+            if a2[i]==1 and joueur==2:
+                Victoire=2
+            if a2[i]==2 and joueur==1:
+                Victoire=1               
     for i in range(len(destroy)):
         can.delete(destroy[i])
     if joueur==1:
         can.delete('Bombe1')
     elif joueur==2:
         can.delete('Bombe2')
-    
+    if Victoire==1:
+        print('Le joueur 1 a gagné')
+        can.delete('Perso2')
+    elif Victoire==2:
+        print('Le joueur 2 a gagné')
+        can.delete('Perso')
 def bombe2(event):
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur
@@ -241,19 +257,21 @@ def animhaut2(event): # déplace le joueur vers le haut
 Quitter=Button(fen,text="Quitter",command=fen.quit)
 Quitter.pack(side=BOTTOM)
 dessiner_map()
+
 # Commande joueur 1 #
 fen.bind("<KeyRelease-Left>",animgauche)
 fen.bind("<KeyRelease-Right>",animdroite)
 fen.bind("<KeyRelease-Up>",animhaut)
 fen.bind("<KeyRelease-Down>",animbas)
+fen.bind("<Key-Return>",bombe1)
 
 # Commande joueur 2 #
 fen.bind("<KeyRelease-q>",animgauche2)
 fen.bind("<KeyRelease-d>",animdroite2)
 fen.bind("<KeyRelease-z>",animhaut2)
 fen.bind("<KeyRelease-s>",animbas2)
-fen.bind("<Key-Return>",bombe2)
-fen.bind("<space>",bombe1)
+fen.bind("<space>",bombe2)
+
 fen.mainloop()
 fen.destroy()
     
