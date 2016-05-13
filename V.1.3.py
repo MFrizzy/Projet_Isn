@@ -78,33 +78,47 @@ perso2=can.create_image(xj2,yj2,anchor=NW,image=joueur2,tags="perso2")
 
 ### Bombes et boosts ###
 
-def bombe(event):
+Bombe1=PhotoImage(file="bomberouge.png")
+Bombe2=PhotoImage(file="bombebleue.png")
+
+def bombe1(event):
     # en entrée : event
-    # en effet de bord : création d'une 'bombe' à la position du joueur
-    global place
-    can.create_oval(xj+10,yj+10,xj+40,yj+40,fill='black',tags='bombe')
+    # en effet de bord : création d'une 'bombe' à la position du joueur,
+    #                    puis explosion au bout d'une seconde
+    can.create_image(xj,yj,anchor=NW,image=Bombe1,tags='Bombe1')
     a=xj
     b=yj
-    explosion(a,b)
+    explosion(a,b,1)
 
-def explosion(xj,yj):
+def explosion(xj,yj,joueur):
     print(can.find_overlapping(xj,yj,xj+50,yj+50))
     destroy=[]
-    a=can.find_overlapping(xj-1,yj-1,xj+51,yj+51)
+    a1=can.find_overlapping(xj-1,yj,xj+51,yj+50)
+    a2=can.find_overlapping(xj,yj-1,xj+50,yj+51)
     b=can.find_withtag('briques')
-    for i in range (len(a)):
+    for i in range (len(a1)):
         for j in range (len(b)):
-            if  a[i]==b[j]:
+            if  a1[i]==b[j]:
                 destroy.append(b[j])
-                print(b[j])
+    for i in range (len(a2)):
+        for j in range(len(b)):
+            if a2[i]==b[j]:
+                destroy.append(b[j])
     for i in range(len(destroy)):
         can.delete(destroy[i])
-    can.delete('bombe')
+    if joueur==1:
+        can.delete('Bombe1')
+    elif joueur==2:
+        can.delete('Bombe2')
     
 def bombe2(event):
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur
-    can.create_oval(xj2+10,yj2+10,xj2+40,yj2+40,fill='black')
+    #                    puis explosion au bout d'une seconde
+    can.create_image(xj2,yj2,anchor=NW,image=Bombe2,tags='Bombe2')
+    a=xj2
+    b=yj2
+    explosion(a,b,2)
 
 ### Personnage / joueur ###
     ### Joueur 1 ###
@@ -239,7 +253,7 @@ fen.bind("<KeyRelease-d>",animdroite2)
 fen.bind("<KeyRelease-z>",animhaut2)
 fen.bind("<KeyRelease-s>",animbas2)
 fen.bind("<Key-Return>",bombe2)
-fen.bind("<space>",bombe)
+fen.bind("<space>",bombe1)
 fen.mainloop()
 fen.destroy()
     
