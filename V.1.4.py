@@ -49,6 +49,8 @@ def startgame():
     dessiner_map()
     dessiner_map()
     personnages()
+    print(can.find_withtag('perso'))
+    print(can.find_withtag('perso2'))
 
 Victoire=0
 scorej1,scorej2=0,0
@@ -116,17 +118,17 @@ def explosion(xj,yj,joueur):
         for j in range (len(b)):
             if  a1[i]==b[j]:
                 destroy.append(b[j])
-            if a1[i]==1 and joueur==2:
+            if a1[i]==339 and joueur==2:
                 Victoire=2              
-            if a1[i]==2 and joueur==1:
+            if a1[i]==340 and joueur==1:
                 Victoire=1
     for i in range (len(a2)):
         for j in range(len(b)):
             if a2[i]==b[j]:
                 destroy.append(b[j])
-            if a2[i]==1 and joueur==2:
+            if a2[i]==339 and joueur==2:
                 Victoire=2
-            if a2[i]==2 and joueur==1:
+            if a2[i]==340 and joueur==1:
                 Victoire=1               
     for i in range(len(destroy)):
         can.delete(destroy[i])
