@@ -104,18 +104,24 @@ def ajouter_bloc(x,y):
 
 Bombe1=PhotoImage(file="bomberouge.png")
 Bombe2=PhotoImage(file="bombebleue.png")
+range_bombe1=0
+range_bombe2=0
 
 def explosion(xj,yj,joueur):
-    global Victoire
+    global Victoire, range_bombe1,range_bombe2
     print(can.find_overlapping(xj,yj,xj+50,yj+50))
     destroy=[]
-    a1=can.find_overlapping(xj-1,yj,xj+51,yj+50)
-    a2=can.find_overlapping(xj,yj-1,xj+50,yj+51)
+    a1=can.find_overlapping(xj-1-range_bombe1*50,yj,xj+51+range_bombe1*50,yj+50)
+    a2=can.find_overlapping(xj,yj-1-range_bombe1*50,xj+50,yj+51+range_bombe1*50)
     b=can.find_withtag('briques')
     for i in range (len(a1)):
         for j in range (len(b)):
             if  a1[i]==b[j]:
+                xb=can.bbox(b[j])[0]
+                yb=can.bbox(b[j])[1]
+                bonus_bombe(xb,yb)
                 destroy.append(b[j])
+                
             if a1[i]==1 and joueur==2:
                 Victoire=2              
             if a1[i]==2 and joueur==1:
@@ -123,7 +129,11 @@ def explosion(xj,yj,joueur):
     for i in range (len(a2)):
         for j in range(len(b)):
             if a2[i]==b[j]:
+                xb=can.bbox(b[j])[0]
+                yb=can.bbox(b[j])[1]
+                bonus_bombe(xb,yb)
                 destroy.append(b[j])
+                 
             if a2[i]==1 and joueur==2:
                 Victoire=2
             if a2[i]==2 and joueur==1:
@@ -158,7 +168,30 @@ def bombe2(event):
     a=xj2
     b=yj2
     explosion(a,b,2)
+### BONUS ###
 
+Bombe_bonus=PhotoImage(file="bonus_bombe.png")
+
+def bonus_bombe(x,y):
+    global range_bombe1,range_bombe2,xj,yj,xj2,yj2
+    a=randint(0,100)
+    if a<=5:
+        can.create_image(x,y,image=Bombe_bonus,anchor=NW,tags="bb")
+
+        
+def verif_bonus_bombe():
+    global xj,yj,range_bombe1,range_bombe2
+    destroy=[]
+    a=can.find_enclosed(xj,yj,xj+50,yj+50)
+    b=can.find_withtag('bb')
+    for i in range (len(a)):
+        for j in range (len(b)):
+            if  a[i]==b[j]:
+                destroy.append(b[j])
+                range_bombe1+=1
+    can.delete(destroy[0])
+    
+                
 ### Personnages / joueurs ###
 
 ## Définitions Joueurs ##
@@ -194,6 +227,7 @@ def animdroite(event): # déplace le joueur vers la droite
     if a==True:
         xj+=50
         can.coords("perso",xj,yj)
+        verif_bonus_bombe()
 
 def animgauche(event): # déplace le joueur1 vers la gauche
     global xj,yj
@@ -208,6 +242,7 @@ def animgauche(event): # déplace le joueur1 vers la gauche
     if a==True:
         xj-=50
         can.coords("perso",xj,yj)
+        verif_bonus_bombe()
 
 def animbas(event): # déplace le joueur1 vers le bas
     global xj,yj
@@ -222,6 +257,7 @@ def animbas(event): # déplace le joueur1 vers le bas
     if a==True:
         yj+=50
         can.coords("perso",xj,yj)
+        verif_bonus_bombe()
 
 def animhaut(event): # déplace le joueur1 vers le haut
     global xj,yj
@@ -236,6 +272,7 @@ def animhaut(event): # déplace le joueur1 vers le haut
     if a==True:
         yj-=50
         can.coords("perso",xj,yj)
+        verif_bonus_bombe()
 
     ### Joueur 2 ###
 
