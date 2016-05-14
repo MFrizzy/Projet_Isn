@@ -119,7 +119,7 @@ def bombe1(event):
     can.create_image(xj,yj,anchor=NW,image=Bombe1,tags='Bombe1')
     a=xj
     b=yj
-    explosion(a,b,1)
+    can.after(2000,explosion,a,b,1)
 
 def bombe2(event):
     # en entrée : event
@@ -128,7 +128,7 @@ def bombe2(event):
     can.create_image(xj2,yj2,anchor=NW,image=Bombe2,tags='Bombe2')
     a=xj2
     b=yj2
-    explosion(a,b,2)
+    can.after(2000,explosion,a,b,2)
 
 def explosion(x,y,joueur):
     global Victoire, range_bombe1,range_bombe2
