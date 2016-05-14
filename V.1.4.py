@@ -8,7 +8,7 @@
 
 from tkinter import*
 from random import*
-
+from winsound import *
 
 ### Initialisation de la fenêtre du menu ###
 
@@ -38,9 +38,9 @@ def menu(event):
         print("Règles")
     if 200<=event.x<=350 and 310<=event.y<=360:
         print("Quitter")
+        fen.destroy()
 
-
-
+PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
 def startgame():
@@ -49,8 +49,7 @@ def startgame():
     dessiner_map()
     dessiner_map()
     personnages()
-
-Victoire=0
+    
 scorej1,scorej2=0,0
 
 ### Creation map ###
@@ -453,5 +452,5 @@ fen.bind("<space>",bombe2)
 fen.bind("<KeyRelease-0>",trap1)
 
 fen.mainloop()
-fen.destroy()
+fen.destroy() 
     
