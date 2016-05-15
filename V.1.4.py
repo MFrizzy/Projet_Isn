@@ -150,26 +150,32 @@ Bombe1=PhotoImage(file="bomberouge.png")
 Bombe2=PhotoImage(file="bombebleue.png")
 range_bombe1=0
 range_bombe2=0
-
-
+nb_bombes1=3
+nb_bombes2=3
 
 def bombe1(event):
+    global nb_bombes1
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur,
     #                    puis explosion au bout d'une seconde
-    can.create_image(xj,yj,anchor=NW,image=Bombe1,tags='Bombe1')
-    a=xj
-    b=yj
-    can.after(2000,explosion,a,b,1)
+    if nb_bombes1>0:
+        can.create_image(xj,yj,anchor=NW,image=Bombe1,tags='Bombe1')
+        a=xj
+        b=yj
+        nb_bombes1-=1
+        can.after(2000,explosion,a,b,1)
 
 def bombe2(event):
+    global nb_bombes2
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur
     #                    puis explosion au bout d'une seconde
-    can.create_image(xj2,yj2,anchor=NW,image=Bombe2,tags='Bombe2')
-    a=xj2
-    b=yj2
-    can.after(2000,explosion,a,b,2)
+    if nb_bombes2<0:
+        can.create_image(xj2,yj2,anchor=NW,image=Bombe2,tags='Bombe2')
+        a=xj2
+        b=yj2
+        nb_bombes2-=1
+        can.after(2000,explosion,a,b,2)
 
 ### Images des animations de l'explosion ###
 
@@ -181,12 +187,14 @@ explosionrouge2=PhotoImage(file='explosionrouge2.png')
 explosionrouge3=PhotoImage(file='explosionrouge3.png')
 
 def explosion(x,y,joueur):
-    global Victoire, range_bombe1,range_bombe2
+    global Victoire, range_bombe1,range_bombe2,nb_bombes1,nb_bombes2
     destroy=[]
     if joueur==1:
         bonus=range_bombe1
+        nb_bombes1+=1
     elif joueur==2:
         bonus=range_bombe2
+        nb_bombes2+=1
     a=0
     explosion_bas=False
     explosion_droite=False
