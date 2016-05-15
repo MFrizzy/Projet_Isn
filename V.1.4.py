@@ -163,9 +163,9 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_bas=True
-        if len(can.find_overlapping(x,y+50,x+50,y+51+a*50))==0 and joueur==2:
+        if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==0 and joueur==2:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
-        elif len(can.find_overlapping(x,y+50,x+50,y+51+a*50))==0 and joueur==1:
+        elif len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==0 and joueur==1:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
         a+=1
     a=0
@@ -185,9 +185,9 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_droite=True
-        if len(can.find_overlapping(x+50,y,x+51+50*a,y+50))==0 and joueur==2:
+        if len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==0 and joueur==2:
             can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
-        elif len(can.find_overlapping(x+50,y,x+51+50*a,y+50))==0 and joueur==1:
+        elif len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==0 and joueur==1:
             can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
         a+=1
     a=0
@@ -207,9 +207,9 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_haut=True
-        if len(can.find_overlapping(x,y,x+50,y-1-a*50))==0 and joueur==2:
+        if len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==0 and joueur==2:
             can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
-        elif len(can.find_overlapping(x,y,x+50,y-1-a*50))==0 and joueur==1:
+        elif len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==0 and joueur==1:
             can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
         a+=1
     a=0
@@ -229,9 +229,9 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x-1-a*50,y,x,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_gauche=True
-        if len(can.find_overlapping(x-1-a*50,y,x,y+50))==0 and joueur==2:
+        if len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==0 and joueur==2:
             can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
-        elif len(can.find_overlapping(x-1-a*50,y,x,y+50))==0 and joueur==1:
+        elif len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==0 and joueur==1:
             can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
         a+=1
     for i in range(len(destroy)):
