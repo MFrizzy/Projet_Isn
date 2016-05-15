@@ -1,0 +1,76 @@
+% 2015-TS-ISN-ApprendreLaTeX.tex
+% Mise à jour : 02/04/2016
+% 
+\documentclass[a4paper,11pt,french]{article}
+\usepackage[utf8]{inputenc}    
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{graphicx}
+\title{Compte Rendu : Bomberman}
+\author{Tanguy \bsc{Thomas}, Titouan \bsc{Rannou}, Clément \bsc{Guin}}
+\date{17 mai 2016}
+\begin{document}
+\maketitle
+
+%& \grave{a}
+\section{Cahier des Charges}
+\subsection{Presentation}
+Le but de ce projet est de créer un clone du jeu vidéo \textit{Bomberman}. Il s'agit d'un jeu multijoueur qui se joue à 2 joueurs. Voici les régles :
+\subsubsection{Regles du jeu}
+Imaginez une arène (vue de dessus) composée de blocs incassables, de blocs cassables (briques) et de chemins praticables. Le jeu se joue à 2 joueurs, ce sont tous les 2 des Bombermans. Il peut se déplacer et poser des bombes. Après quelques secondes elles explosent et détruisent les blocs cassables proches. Les régles sont simples : il ne doit en rester qu'un. Il faut utiliser toute sa ruse, récuper des items bonus et en posant plusieurs bombes afin de venir à bout de votre adversaire.
+
+\subsubsection{Environnement}
+Nous décrivons dans cette section l'arène du jeu :
+La construction de l'arène se fait à l'aide des images suivantes :
+\begin{itemize}
+\item Des blocs \textit{incassables} %image
+\includegraphics[width=1cm,angle=0]{blocs}
+\item Des blocs \textit{cassables} %image
+\includegraphics[width=1cm,angle=0]{briques}
+\item Des  2 personnages  %les 2 images
+\includegraphics[width=1cm,angle=0]{joueur1}
+\includegraphics[width=1cm,angle=0]{joueur2}
+\end{itemize}
+Chaque joueur commence à des coins opposés de l'arène. Ils ont chacun 3 vies en début de partie. Ils en perdent une s'ils sont dans la portée de la bombe. Si un joueur n'a plus de vie il a perdu. Chaque joueur peut poser 1 piège qui immobilise le joueur adverse
+\subsubsection{Ce que le joueur peut ou doit faire}
+\begin{itemize}
+\item Ne rien faire
+\item Se déplacer dans l'arène sur les cases vides
+\item Pouvoir récuper des bonus
+\item Aller sur la même case qu'un joueur, une bombe ou un bonus
+\item Poser des bombes
+\end{itemize}
+\subsubsection{Ce que le joueur ne peut pas faire}
+\begin{itemize}
+\item Sortir de l'arène
+\item Traverser des obstacles (blocs et briques)
+\item Jouer une fois mort
+\item Poser plus de 3 bombes en même temps
+\end{itemize}
+\subsubsection{Ce que les bombes peuvent ou doivent faire}
+\begin{itemize}
+\item Exploser au bout de 2 secondes
+\item Être traversées par les joueurs
+\end{itemize}
+\subsubsection{Ce que les bombes ne peuvent pas faire}
+\begin{itemize}
+\item Cassser des blocs (éléments incassables)
+\end{itemize}
+\subsubsection{Ce que l'explosion peut ou doit faire}
+\begin{itemize}
+\item Tuer le joueur qui a posé la bombe ou/et le joueur adversaire
+\item Casser des briques (éléments cassables) correspondant à la portée du joueur
+\item Faire apparaître différents bonus
+\end{itemize}
+\subsubsection{Bonus} 
+\begin{itemize}
+\item Vie
+\item Augmentation de la portée de la bombe
+\end{itemize}
+
+			% {\Large } : pour écrire en plus gros 
+			% \textit{} :  pour mettre en italiques
+			% pour mettre en gras {\bf course}}
+			% pour entourer un mot \fbox{la vie est belle}
+\newpage 
+\end{document}
