@@ -150,6 +150,7 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    bonus_vie(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
                     elif joueur==1:
@@ -172,6 +173,7 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    bonus_vie(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
                     elif joueur==1:
@@ -194,6 +196,7 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    bonus_vie(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
                     elif joueur==1:
@@ -216,6 +219,7 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    bonus_vie(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
                     elif joueur==1:
@@ -315,6 +319,42 @@ def verif_trap2():
     if len(destroy)==1:
         can.delete(destroy[0])
 
+
+vie_joueur1=3
+vie_joueur2=3
+vie_bonus=PhotoImage(file="vie.png")
+
+def bonus_vie(x,y):
+    global vie_joueur1,vie_joueur2,xj,yj,xj2,yj2
+    a=randint(0,100)
+    if a<=3:
+        can.create_image(x,y,image=vie_bonus,anchor=NW,tags="bv")
+        
+def verif_bonus_vie():
+    global xj,yj,vie_joueur1
+    destroy=[]
+    a=can.find_enclosed(xj,yj,xj+50,yj+50)
+    b=can.find_withtag('bv')
+    for i in range (len(a)):
+        for j in range (len(b)):
+            if  a[i]==b[j]:
+                destroy.append(b[j])
+                vie_joueur1+=1
+    if len(destroy)==1:
+        can.delete(destroy[0])
+
+def verif_bonus_vie1():
+    global xj2,yj2,vie_joueur2
+    destroy=[]
+    a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
+    b=can.find_withtag('bv')
+    for i in range (len(a)):
+        for j in range (len(b)):
+            if  a[i]==b[j]:
+                destroy.append(b[j])
+                vie_joueur2+=1
+    if len(destroy)==1:
+        can.delete(destroy[0])
                 
 ### Personnages / joueurs ###
 
@@ -353,6 +393,7 @@ def animdroite(event): # déplace le joueur vers la droite
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
         verif_trap2()
+        verif_bonus_vie()
 
 def animgauche(event): # déplace le joueur1 vers la gauche
     global xj,yj
@@ -369,6 +410,7 @@ def animgauche(event): # déplace le joueur1 vers la gauche
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
         verif_trap2()
+        verif_bonus_vie()
 
 def animbas(event): # déplace le joueur1 vers le bas
     global xj,yj
@@ -385,6 +427,7 @@ def animbas(event): # déplace le joueur1 vers le bas
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
         verif_trap2()
+        verif_bonus_vie()
 
 def animhaut(event): # déplace le joueur1 vers le haut
     global xj,yj
@@ -401,6 +444,7 @@ def animhaut(event): # déplace le joueur1 vers le haut
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
         verif_trap2()
+        verif_bonus_vie()
 
     ### Joueur 2 ###
 
@@ -421,6 +465,7 @@ def animdroite2(event): # déplace le joueur2 vers la droite
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
         verif_trap1()
+        verif_bonus_vie1()
 
 def animgauche2(event): # déplace le joueur2 vers la gauche
     global xj2,yj2
@@ -437,6 +482,7 @@ def animgauche2(event): # déplace le joueur2 vers la gauche
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
         verif_trap1()
+        verif_bonus_vie1()
 
 def animbas2(event): # déplace le joueur2 vers le bas
     global xj2,yj2
@@ -453,6 +499,7 @@ def animbas2(event): # déplace le joueur2 vers le bas
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
         verif_trap1()
+        verif_bonus_vie1()
 
 def animhaut2(event): # déplace le joueur2 vers le haut
     global xj2,yj2,place2
@@ -469,6 +516,7 @@ def animhaut2(event): # déplace le joueur2 vers le haut
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
         verif_trap1()
+        verif_bonus_vie1()
 	
 ### Programme ###
 
