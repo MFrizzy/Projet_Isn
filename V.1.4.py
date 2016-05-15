@@ -195,10 +195,10 @@ def explosion(x,y,joueur):
         a+=1
     for i in range(len(destroy)):
         can.delete(destroy[i])
-    if joueur==1:
-        can.delete('Bombe1')
+    if joueur==1:       
+        can.delete(can.find_withtag('Bombe1')[0])
     if joueur==2:
-        can.delete('Bombe2')
+        can.delete(can.find_withtag('Bombe2')[0])
 ### BONUS ###
 
 Bombe_bonus=PhotoImage(file="bonus_bombe.png")
