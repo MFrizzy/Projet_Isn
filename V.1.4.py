@@ -126,6 +126,15 @@ def bombe2(event):
     b=yj2
     can.after(2000,explosion,a,b,2)
 
+### Images des animations de l'explosion ###
+
+explosionbleue1=PhotoImage(file='explosionbleue1.png')
+explosionbleue2=PhotoImage(file='explosionbleue2.png')
+explosionbleue3=PhotoImage(file='explosionbleue3.png')
+explosionrouge1=PhotoImage(file='explosionrouge1.png')
+explosionrouge2=PhotoImage(file='explosionrouge2.png')
+explosionrouge3=PhotoImage(file='explosionrouge3.png')
+
 def explosion(x,y,joueur):
     global Victoire, range_bombe1,range_bombe2
     destroy=[]
@@ -146,10 +155,18 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    if joueur==2:
+                        can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+                    elif joueur==1:
+                        can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_bas=True
+        if len(can.find_overlapping(x,y+50,x+50,y+51+a*50))==0 and joueur==2:
+            can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+        elif len(can.find_overlapping(x,y+50,x+50,y+51+a*50))==0 and joueur==1:
+            can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
         a+=1
     a=0
     while explosion_droite==False and a<=bonus:      
@@ -160,10 +177,18 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    if joueur==2:
+                        can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+                    elif joueur==1:
+                        can.create_image(xb,yb,anchor=NW,image=explosionrouge2,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_droite=True
+        if len(can.find_overlapping(x+50,y,x+51+50*a,y+50))==0 and joueur==2:
+            can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+        elif len(can.find_overlapping(x+50,y,x+51+50*a,y+50))==0 and joueur==1:
+            can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
         a+=1
     a=0
     while explosion_haut==False and a<=bonus:
@@ -174,10 +199,18 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    if joueur==2:
+                        can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+                    elif joueur==1:
+                        can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_haut=True
+        if len(can.find_overlapping(x,y,x+50,y-1-a*50))==0 and joueur==2:
+            can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+        elif len(can.find_overlapping(x,y,x+50,y-1-a*50))==0 and joueur==1:
+            can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
         a+=1
     a=0
     while explosion_gauche==False and a<=bonus:
@@ -188,17 +221,36 @@ def explosion(x,y,joueur):
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
+                    if joueur==2:
+                        can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+                    elif joueur==1:
+                        can.create_image(xb,yb,anchor=NW,image=explosionrouge2,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x-1-a*50,y,x,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_gauche=True
+        if len(can.find_overlapping(x-1-a*50,y,x,y+50))==0 and joueur==2:
+            can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+        elif len(can.find_overlapping(x-1-a*50,y,x,y+50))==0 and joueur==1:
+            can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
         a+=1
     for i in range(len(destroy)):
         can.delete(destroy[i])
     if joueur==1:       
         can.delete(can.find_withtag('Bombe1')[0])
+        can.create_image(x,y,anchor=NW,image=explosionrouge1,tags='explosionrouge')
+        can.after(1000,destruction_animation_explosion,1)
     if joueur==2:
         can.delete(can.find_withtag('Bombe2')[0])
+        can.create_image(x,y,anchor=NW,image=explosionbleue1,tags='explosionbleue')
+        can.after(1000,destruction_animation_explosion,2)
+    
+
+def destruction_animation_explosion(joueur):
+    if joueur==2: 
+        can.delete('explosionbleue')
+    elif joueur==1:
+        can.delete('explosionrouge')
 ### BONUS ###
 
 Bombe_bonus=PhotoImage(file="bonus_bombe.png")
