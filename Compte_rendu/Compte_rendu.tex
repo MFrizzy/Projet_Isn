@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
 \usepackage{graphicx}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
 \title{Compte Rendu : Bomberman}
 \author{Tanguy \bsc{Thomas}, Titouan \bsc{Rannou}, Clément \bsc{Guin}}
 \date{17 mai 2016}
@@ -67,6 +68,54 @@ Chaque joueur commence à des coins opposés de l'arène. Ils ont chacun 3 vies 
 \item Vie
 \item Augmentation de la portée de la bombe
 \end{itemize}
+\subsection{Fonctions}
+Dans cette partie nous présenterons les différentes fonctions qui permettront le bon fonctionnement du jeu :
+\begin{description}
+\item [menu :] Fait apparaitre le menu
+\item [startgame :] 	Démarre le jeu
+\item [dessinermap :] Dessine l'arène de jeu
+\item [ajouter\_brique :] Dessine une brique
+\item [ajouter\_bloc :] Dessine un bloc
+\item [bombe1 :] Pose une bombe et explose 2 secondes après pour le joueur 1
+\item [bombe2 :] Pose une bombe et explose 2 secondes après pour le joueur 2
+\item [explosion :] Fait exploser la bombe
+\item [destruction\_animation\_explosion :] Détruit l'animation de la bombe
+\item [bonus\_bombe :] Pose un bonus de portée de la bombe avec une probabilité de 5\%
+\item [verif\_bonus\_bombe :] Verifie si le joueur 1 marche sur le bonus
+\item [verif\_bonus\_bombe2 :] Verifie si le joueur 2 marche sur le bonus
+\item [trap1 :] Pose le piège pour le joueur 1
+\item [trap2 :] Pose le piège pour le joueur 2
+\item [personnages :] Crée les 2 personnes
+\item [animdroite :] Déplace le joueur 1 vers la droite
+\item [animgauche :] Déplace le joueur 1 vers la gauche
+\item [animbas :] Déplace le joueur 1 vers le bas
+\item [animhaut :] Déplace le joueur 1 vers le haut
+\item [animdroite2 :] Déplace le joueur 2 vers la droite
+\item [animgauche2 :] Déplace le joueur 2 vers la gauche
+\item [animbas2 :] Déplace le joueur 2 vers le bas
+\item[animhaut2 :] Déplace le joueur 2 vers le haut
+\end{description}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			% {\Large } : pour écrire en plus gros 
 			% \textit{} :  pour mettre en italiques
