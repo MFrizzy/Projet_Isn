@@ -25,27 +25,77 @@ can.create_image(2,2,image=MENU,anchor=NW,tags="menu")
 def menu(event):
     global x,y,jouer
     x,y=event.x,event.y
-    if 107<=event.x<=443 and 160<=event.y<=200:
+    if 107<=event.x<=443 and 160<=event.y<=200 and gamestarted==False:
         print("Nouvelle partie")
         startgame()
-    if 107<=event.x<=443 and 230<=event.y<=270:
+    if 107<=event.x<=443 and 230<=event.y<=270 and gamestarted==False:
         print("Quitter")
         fen.destroy()
 
-PlaySound("musique.wav", SND_ASYNC)
+#PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
 herbe=PhotoImage(file="herbe.png")
 def startgame():
-    global gamestarted
+
+    global gamestarted,score
     gamestarted=True
     can.delete("menu")
     can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
     dessiner_map()
     personnages()
+    score=Canvas(fen,width=550,height=200,bg="white")
+    score.pack(side=BOTTOM)
+    score.create_text(70,75,text="Joueur1")
+    score.create_text(70,125,text="Joueur2")
+    score.create_rectangle(100,50,150,100,fill="red")
+    score.create_rectangle(150,50,200,100,fill="red")
+    score.create_rectangle(200,50,250,100,fill="red")
+    score.create_rectangle(100,100,150,150,fill="blue")
+    score.create_rectangle(150,100,200,150,fill="blue")
+    score.create_rectangle(200,100,250,150,fill="blue")
+    viej1=Button(fen,text="viej1 -1",command=jaugedeviej1)
+    viej1.pack(side=BOTTOM)
+    viej2=Button(fen,text="viej2 -1",command=jaugedeviej2)
+    viej2.pack(side=BOTTOM)
+
     
+
+## Vies et scores ##  
 scorej1,scorej2=0,0
+x,y=1,1
+l1,l2=0,0
+pvj1=3
+pvj2=3
+
+def jaugedeviej1():
+    global pvj1,score,coeur
+    pvj1-=1
+    if pvj1==2:
+        score.create_rectangle(100,50,150,100,fill="white",tags="11")# premier carré j1
+    if pvj1==1:
+        score.create_rectangle(150,50,200,100,fill="white",tags="12")#deuxièmre carré j1
+    if pvj1==0:
+        score.create_rectangle(200,50,250,100,fill="white",tags="13")#troisième carré j1
+
+
+    if pvj1==2 and coeur==1:
+        score.delete("11")
+    if pvj1==1 and coeur==1:
+        score.delete("12")
+    if pvj1==0 and coeur==1:
+        score.delete("13")
+
+def jaugedeviej2():
+    global pvj2,score
+    pvj2-=1
+    if pvj2==2:
+        score.create_rectangle(100,100,150,150,fill="white")
+    if pvj2==1:
+        score.create_rectangle(150,100,200,150,fill="white")
+    if pvj2==0:
+        score.create_rectangle(200,100,250,150,fill="white")
 
 ### Creation map ###
 
@@ -251,7 +301,7 @@ def destruction_animation_explosion(joueur):
     elif joueur==1:
         can.delete('explosionrouge')
 ### BONUS ###
-
+coeur=0
 Bombe_bonus=PhotoImage(file="bonus_bombe.png")
 
 def bonus_bombe(x,y):
@@ -319,19 +369,16 @@ def verif_trap2():
     if len(destroy)==1:
         can.delete(destroy[0])
 
-
-vie_joueur1=3
-vie_joueur2=3
 vie_bonus=PhotoImage(file="vie.png")
 
 def bonus_vie(x,y):
-    global vie_joueur1,vie_joueur2,xj,yj,xj2,yj2
+    global pvj1,pvj2,xj,yj,xj2,yj2
     a=randint(0,100)
     if a<=3:
         can.create_image(x,y,image=vie_bonus,anchor=NW,tags="bv")
         
 def verif_bonus_vie():
-    global xj,yj,vie_joueur1
+    global xj,yj,pvj1,coeur
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
     b=can.find_withtag('bv')
@@ -339,12 +386,13 @@ def verif_bonus_vie():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                vie_joueur1+=1
+                coeur+=1
+                pvj1+=1
     if len(destroy)==1:
         can.delete(destroy[0])
 
 def verif_bonus_vie1():
-    global xj2,yj2,vie_joueur2
+    global xj2,yj2,pvj2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
     b=can.find_withtag('bv')
@@ -352,7 +400,7 @@ def verif_bonus_vie1():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                vie_joueur2+=1
+                pvj2+=1
     if len(destroy)==1:
         can.delete(destroy[0])
                 
@@ -411,6 +459,7 @@ def animgauche(event): # déplace le joueur1 vers la gauche
         verif_bonus_bombe()
         verif_trap2()
         verif_bonus_vie()
+
 
 def animbas(event): # déplace le joueur1 vers le bas
     global xj,yj
@@ -523,7 +572,7 @@ def animhaut2(event): # déplace le joueur2 vers le haut
 ## Fenêtre du menu ##
 
 can.bind("<Button-1>",menu)
-
+score=can
 ## Fenêtre du jeu ##
 
 Quitter=Button(fen,text="Quitter",command=fen.quit)
