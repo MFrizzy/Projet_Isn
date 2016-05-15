@@ -14,39 +14,34 @@ from winsound import *
 
 fen=Tk()
 fen.title("Menu")
-can=Canvas(fen, width =550, height =550, bg ="lime")
+can=Canvas(fen, width =550, height =550)
 can.pack(side=TOP,padx=5,pady=5)
 x,y=0,0
-can.create_rectangle(200,100,x+350,y+150,fill="red",tags="menu")
-can.create_rectangle(200,170,x+350,y+220,fill="red",tags="menu")
-can.create_rectangle(200,240,x+350,y+290,fill="red",tags="menu")
-can.create_rectangle(200,310,x+350,y+360,fill="red",tags="menu")
-can.create_text(275,125,text="Nouvelle partie",tags="menu")
-can.create_text(275,195,text="Scores",tags="menu")
-can.create_text(275,265,text="Règles",tags="menu")
-can.create_text(275,335,text="Quitter",tags="menu")
+gamestarted=False
+MENU=PhotoImage(file="menu.png")
+can.create_image(2,2,image=MENU,anchor=NW,tags="menu")
+
 
 def menu(event):
     global x,y,jouer
     x,y=event.x,event.y
-    if 200<=event.x<=350 and 100<=event.y<=150:
+    if 107<=event.x<=443 and 160<=event.y<=200:
         print("Nouvelle partie")
         startgame()
-    if 200<=event.x<=350 and 170<=event.y<=220:
-        print("Scores")
-    if 200<=event.x<=350 and 240<=event.y<=290:
-        print("Règles")
-    if 200<=event.x<=350 and 310<=event.y<=360:
+    if 107<=event.x<=443 and 230<=event.y<=270:
         print("Quitter")
         fen.destroy()
 
 PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
+herbe=PhotoImage(file="herbe.png")
 def startgame():
+    global gamestarted
+    gamestarted=True
     can.delete("menu")
+    can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
-    dessiner_map()
     dessiner_map()
     personnages()
     
