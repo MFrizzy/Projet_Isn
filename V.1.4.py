@@ -32,15 +32,15 @@ def menu(event):
         print("Quitter")
         fen.destroy()
 
-#PlaySound("musique.wav", SND_ASYNC)
+PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
 herbe=PhotoImage(file="herbe.png")
 def startgame():
-
-    global gamestarted,score,id_joueur1,id_joueur2
+    global gamestarted,score,id_joueur1,id_joueur2,xj,yj,xj2,yj2,pvj1,pvj2
     gamestarted=True
     can.delete("menu")
+    can.delete(ALL)
     can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
     dessiner_map()
@@ -58,15 +58,10 @@ def startgame():
     score.create_rectangle(100,100,150,150,fill="blue")
     score.create_rectangle(150,100,200,150,fill="blue")
     score.create_rectangle(200,100,250,150,fill="blue")
-    viej1=Button(fen,text="viej1 -1",command=jaugedeviej1)
-    viej1.pack(side=BOTTOM)
-    viej2=Button(fen,text="viej2 -1",command=jaugedeviej2)
-    viej2.pack(side=BOTTOM)
-
     
 
-## Vies et scores ##  
-scorej1,scorej2=0,0
+## Vies ##  
+
 x,y=1,1
 l1,l2=0,0
 pvj1=3
@@ -78,6 +73,9 @@ def jaugedeviej1():
 def jaugedeviej2():
     enleve_vie(2)
 
+jeufini=PhotoImage(file="gameover.png")
+rejouer=PhotoImage(file="rejouer.png")
+quitter=PhotoImage(file="quitter.png")
 def enleve_vie(joueur):
     global pvj1,pvj2,score,id_joueur1,id_joueur2
     if joueur==1:
@@ -87,10 +85,14 @@ def enleve_vie(joueur):
     if pvj1==2:
         score.create_rectangle(100,50,150,100,fill="white")# premier carré j1
     if pvj1==1:
-        score.create_rectangle(150,50,200,100,fill="white")#deuxièmre carré j1
+        score.create_rectangle(150,50,200,100,fill="white")# deuxièmre carré j1
     if pvj1==0:
-        score.create_rectangle(200,50,250,100,fill="white")#troisième carré j1
+        score.create_rectangle(200,50,250,100,fill="white")# troisième carré j1
         can.delete(id_joueur1)
+        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
+        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
+        can.create_image(350,335,image=quitter,anchor=NW) # Quitter? 100*50
+        can.bind("<Button-1>",perdu)
         print('Le joueur 2 a gagné')
     if pvj2==2:
         score.create_rectangle(100,100,150,150,fill="white")
@@ -99,6 +101,10 @@ def enleve_vie(joueur):
     if pvj2==0:
         score.create_rectangle(200,100,250,150,fill="white")
         can.delete(id_joueur2)
+        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
+        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
+        can.create_image(350,385,image=quitter,anchor=NW) # Quitter? 100*50
+        can.bind("<Button-1>",perdu)
         print('Le joueur 1 a gagné')
 
 def rajoute_vie(joueur):
@@ -115,6 +121,22 @@ def rajoute_vie(joueur):
         score.create_rectangle(100,100,150,150,fill="blue")    
     if pvj2==2:
         score.create_rectangle(150,100,200,150,fill="blue")
+
+## Ecran de game over ##
+
+def perdu(event):
+    global x,y,pvj1,pvj2,xj,yj,xj2,yj2
+    x,y=event.x,event.y
+    if 350<=event.x<=450 and 335<=event.y<=385:
+        fen.quit()
+    if 100<=event.x<=200 and 335<=event.y<=385:
+        print("rejouer?")
+        score.destroy()
+        startgame()
+        pvj1=3
+        pvj2=3
+        xj,yj=0,0
+        xj2,yj2=500,500
 
 ### Creation map ###
 
@@ -610,15 +632,12 @@ def animhaut2(event): # déplace le joueur2 vers le haut
 ### Programme ###
 
 ## Fenêtre du menu ##
-
 can.bind("<Button-1>",menu)
 score=can
 ## Fenêtre du jeu ##
-
 Quitter=Button(fen,text="Quitter",command=fen.quit)
 Quitter.pack(side=BOTTOM)
-
-
+## Ecran de game over ##
 ## Commandes joueur 1 ##
 fen.bind("<KeyRelease-Left>",animgauche)
 fen.bind("<KeyRelease-Right>",animdroite)
