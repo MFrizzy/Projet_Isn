@@ -78,18 +78,6 @@ l1,l2=0,0
 pvj1=3
 pvj2=3
 
-def jaugedeviej1():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
-    enleve_vie(1)
-
-def jaugedeviej2():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
-    enleve_vie(2)
-
 jeufini=PhotoImage(file="gameover.png")
 rejouer=PhotoImage(file="rejouer.png")
 quitter=PhotoImage(file="quitter.png")
@@ -286,6 +274,11 @@ def explosion(x,y,joueur):
     explosion_droite=False
     explosion_haut=False
     explosion_gauche=False
+    for i in range(len(can.find_overlapping(x,y,x+50,y+50))):
+        if id_joueur1==can.find_overlapping(x,y,x+50,y+50)[i]:
+            enleve_vie(1)
+        elif id_joueur2==can.find_overlapping(x,y,x+50,y+50)[i]:
+            enleve_vie(2)
     while explosion_bas==False and a<=bonus:
         for i in range(len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))):
             for j in range(len(can.find_withtag('briques'))):
@@ -306,8 +299,10 @@ def explosion(x,y,joueur):
                     explosion_bas=True
             if id_joueur1==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
                 enleve_vie(1)
+                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
             elif id_joueur2==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
-                enleve_vie(2)          
+                enleve_vie(2)
+                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==2:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         elif len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==1:
@@ -334,8 +329,10 @@ def explosion(x,y,joueur):
                     explosion_droite=True
             if id_joueur1==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
                 enleve_vie(1)
+                can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
             elif id_joueur2==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
                 enleve_vie(2)
+                can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         if len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==2:
             can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         elif len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==1:
@@ -362,8 +359,10 @@ def explosion(x,y,joueur):
                     explosion_haut=True
             if id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(1)
+                an.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
             elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(2)
+                can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         if len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==2:
             can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         elif len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==1:
@@ -390,8 +389,10 @@ def explosion(x,y,joueur):
                     explosion_gauche=True
             if id_joueur1==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
                 enleve_vie(1)
+                can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
             elif id_joueur2==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
                 enleve_vie(2)
+                can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         if len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==2:
             can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         elif len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==1:
