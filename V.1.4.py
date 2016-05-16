@@ -89,6 +89,9 @@ def jaugedeviej2():
     # Effet de bord :
     enleve_vie(2)
 
+jeufini=PhotoImage(file="gameover.png")
+rejouer=PhotoImage(file="rejouer.png")
+quitter=PhotoImage(file="quitter.png")
 def enleve_vie(joueur):
     # En entrée     :
     # En sortie     :
@@ -105,6 +108,10 @@ def enleve_vie(joueur):
     if pvj1==0:
         score.create_rectangle(200,50,250,100,fill="white")#troisième carré j1
         can.delete(id_joueur1)
+        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
+        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
+        can.create_image(350,335,image=quitter,anchor=NW) # Quitter? 100*50
+        can.bind("<Button-1>",perdu)
         print('Le joueur 2 a gagné')
     if pvj2==2:
         score.create_rectangle(100,100,150,150,fill="white")
@@ -113,6 +120,10 @@ def enleve_vie(joueur):
     if pvj2==0:
         score.create_rectangle(200,100,250,150,fill="white")
         can.delete(id_joueur2)
+        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
+        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
+        can.create_image(350,385,image=quitter,anchor=NW) # Quitter? 100*50
+        can.bind("<Button-1>",perdu)
         print('Le joueur 1 a gagné')
 
 def rajoute_vie(joueur):
@@ -132,6 +143,22 @@ def rajoute_vie(joueur):
         score.create_rectangle(100,100,150,150,fill="blue")    
     if pvj2==2:
         score.create_rectangle(150,100,200,150,fill="blue")
+
+## Ecran de game over ##
+
+def perdu(event):
+    global x,y,pvj1,pvj2,xj,yj,xj2,yj2
+    x,y=event.x,event.y
+    if 350<=event.x<=450 and 335<=event.y<=385:
+        fen.quit()
+    if 100<=event.x<=200 and 335<=event.y<=385:
+        print("rejouer?")
+        score.destroy()
+        startgame()
+        pvj1=3
+        pvj2=3
+        xj,yj=0,0
+        xj2,yj2=500,500
 
 ### Creation map ###
 
@@ -390,7 +417,7 @@ def bonus_bombe(x,y):
     # Effet de bord :
     global range_bombe1,range_bombe2,xj,yj,xj2,yj2
     a=randint(0,100)
-    if a<=7:
+    if a<=10:
         can.create_image(x,y,image=Bombe_bonus,anchor=NW,tags="bb")
 
         
