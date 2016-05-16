@@ -64,12 +64,6 @@ def startgame():
     score.create_rectangle(200,100,250,150,fill="blue")
     score.create_image(250,50,image=Bombe1,anchor=NW)
     score.create_image(250,100,image=Bombe2,anchor=NW)
-    viej1=Button(fen,text="viej1 -1",command=jaugedeviej1)
-    viej1.pack(side=BOTTOM)
-    viej2=Button(fen,text="viej2 -1",command=jaugedeviej2)
-    viej2.pack(side=BOTTOM)
-
-    
 
 ## Vies et scores ##  
 scorej1,scorej2=0,0
@@ -152,7 +146,7 @@ def rajoute_vie(joueur):
 ## Ecran de game over ##
 
 def perdu(event):
-    global x,y,pvj1,pvj2,xj,yj,xj2,yj2
+    global x,y,pvj1,pvj2,xj,yj,xj2,yj2,range_bombe1,range_bombe2,nb_bombes1,nb_bombes2
     x,y=event.x,event.y
     if 350<=event.x<=450 and 335<=event.y<=385:
         fen.quit()
@@ -160,8 +154,13 @@ def perdu(event):
         print("rejouer?")
         score.destroy()
         startgame()
+    # réinitialisation des variables des joueurs
         pvj1=3
         pvj2=3
+        range_bombe1=0
+        range_bombe2=0
+        nb_bombes1=1
+        nb_bombes2=1
         xj,yj=0,0
         xj2,yj2=500,500
 
@@ -414,7 +413,7 @@ def destruction_animation_explosion(joueur):
         can.delete('explosionrouge')
 ### BONUS ###
 coeur=0
-Bombe_bonus=PhotoImage(file="bonus_bombe.png")
+Bombe_bonus=PhotoImage(file="bonus_range.png")
 
 def bonus_bombe(x,y):
     # En entrée     :
@@ -562,11 +561,8 @@ def personnages():
     # En sortie     :
     # Effet de bord :
     # Personnage 1 #
-    place=[int(xj/50),int(yj/50)] # position du personnage
     perso=can.create_image(0,0,anchor=NW,image=joueur1,tags="perso")
-
     # Personnage 2 #
-    place2=[int(xj2/50),int(yj2/50)]
     perso2=can.create_image(500,500,anchor=NW,image=joueur2,tags="perso2")
     
 ## Mouvements Joueur 1 ##
@@ -720,7 +716,7 @@ def animhaut2(event): # déplace le joueur2 vers le haut
     # En entrée     :
     # En sortie     :
     # Effet de bord :
-    global xj2,yj2,place2
+    global xj2,yj2
     a=True
     for i in range (len(can.find_enclosed(xj2-1,yj2+1,xj2+51,yj2-51))):
         for j in range(len(can.find_withtag('briques'))):
