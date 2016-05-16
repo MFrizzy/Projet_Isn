@@ -64,12 +64,12 @@ def startgame():
     score.create_rectangle(200,100,250,150,fill="blue")
     score.create_image(250,50,image=Bombe1,anchor=NW)
     score.create_image(250,100,image=Bombe2,anchor=NW)
-    score.create_text(450,68,text="Portée")
-    score.create_text(450,82,text="Bombe")
-    score.create_text(450,118,text="Portée")
-    score.create_text(450,132,text="Bombe")
-    score.create_text(515,75,text="1")
-    score.create_text(515,125,text="1")
+    score.create_text(500,68,text="Portée")
+    score.create_text(500,82,text="Bombe")
+    score.create_text(500,118,text="Portée")
+    score.create_text(500,132,text="Bombe")
+    score.create_text(540,75,text="1")
+    score.create_text(540,125,text="1")
 
 ## Vies et scores ##  
 scorej1,scorej2=0,0
@@ -446,7 +446,9 @@ def verif_bonus_bombe():
                 destroy.append(b[j])
                 range_bombe1+=1
                 score.create_image(500,50,image=blanc,anchor=NW)
-                score.create_text(515,75,text=range_bombe1+1)
+                score.create_text(500,68,text="Portée")
+                score.create_text(500,82,text="Bombe")
+                score.create_text(540,75,text=range_bombe1+1)
     if len(destroy)==1:
         can.delete(destroy[0])
 
@@ -465,7 +467,9 @@ def verif_bonus_bombe1():
                 range_bombe2+=1
                 can.delete("txt1")
                 score.create_image(550,50,image=blanc,anchor=NW)
-                score.create_text(515,125,text=range_bombe2+1)
+                score.create_text(500,118,text="Portée")
+                score.create_text(500,132,text="Bombe")
+                score.create_text(540,125,text=range_bombe2+1)
     if len(destroy)==1:
         can.delete(destroy[0])
 
