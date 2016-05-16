@@ -32,15 +32,15 @@ def menu(event):
         print("Quitter")
         fen.destroy()
 
-PlaySound("musique.wav", SND_ASYNC)
+#PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
 herbe=PhotoImage(file="herbe.png")
 def startgame():
-    global gamestarted,score,id_joueur1,id_joueur2,xj,yj,xj2,yj2,pvj1,pvj2
+
+    global gamestarted,score,id_joueur1,id_joueur2
     gamestarted=True
     can.delete("menu")
-    can.delete(ALL)
     can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
     dessiner_map()
@@ -58,10 +58,15 @@ def startgame():
     score.create_rectangle(100,100,150,150,fill="blue")
     score.create_rectangle(150,100,200,150,fill="blue")
     score.create_rectangle(200,100,250,150,fill="blue")
+    viej1=Button(fen,text="viej1 -1",command=jaugedeviej1)
+    viej1.pack(side=BOTTOM)
+    viej2=Button(fen,text="viej2 -1",command=jaugedeviej2)
+    viej2.pack(side=BOTTOM)
+
     
 
-## Vies ##  
-
+## Vies et scores ##  
+scorej1,scorej2=0,0
 x,y=1,1
 l1,l2=0,0
 pvj1=3
@@ -73,9 +78,6 @@ def jaugedeviej1():
 def jaugedeviej2():
     enleve_vie(2)
 
-jeufini=PhotoImage(file="gameover.png")
-rejouer=PhotoImage(file="rejouer.png")
-quitter=PhotoImage(file="quitter.png")
 def enleve_vie(joueur):
     global pvj1,pvj2,score,id_joueur1,id_joueur2
     if joueur==1:
@@ -85,14 +87,10 @@ def enleve_vie(joueur):
     if pvj1==2:
         score.create_rectangle(100,50,150,100,fill="white")# premier carré j1
     if pvj1==1:
-        score.create_rectangle(150,50,200,100,fill="white")# deuxièmre carré j1
+        score.create_rectangle(150,50,200,100,fill="white")#deuxièmre carré j1
     if pvj1==0:
-        score.create_rectangle(200,50,250,100,fill="white")# troisième carré j1
+        score.create_rectangle(200,50,250,100,fill="white")#troisième carré j1
         can.delete(id_joueur1)
-        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
-        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
-        can.create_image(350,335,image=quitter,anchor=NW) # Quitter? 100*50
-        can.bind("<Button-1>",perdu)
         print('Le joueur 2 a gagné')
     if pvj2==2:
         score.create_rectangle(100,100,150,150,fill="white")
@@ -101,10 +99,6 @@ def enleve_vie(joueur):
     if pvj2==0:
         score.create_rectangle(200,100,250,150,fill="white")
         can.delete(id_joueur2)
-        can.create_image(100,225,image=jeufini,anchor=NW) # Gameover 350*100 
-        can.create_image(100,335,image=rejouer,anchor=NW) # Rejouer? 100*50
-        can.create_image(350,385,image=quitter,anchor=NW) # Quitter? 100*50
-        can.bind("<Button-1>",perdu)
         print('Le joueur 1 a gagné')
 
 def rajoute_vie(joueur):
@@ -121,22 +115,6 @@ def rajoute_vie(joueur):
         score.create_rectangle(100,100,150,150,fill="blue")    
     if pvj2==2:
         score.create_rectangle(150,100,200,150,fill="blue")
-
-## Ecran de game over ##
-
-def perdu(event):
-    global x,y,pvj1,pvj2,xj,yj,xj2,yj2
-    x,y=event.x,event.y
-    if 350<=event.x<=450 and 335<=event.y<=385:
-        fen.quit()
-    if 100<=event.x<=200 and 335<=event.y<=385:
-        print("rejouer?")
-        score.destroy()
-        startgame()
-        pvj1=3
-        pvj2=3
-        xj,yj=0,0
-        xj2,yj2=500,500
 
 ### Creation map ###
 
@@ -189,8 +167,8 @@ Bombe1=PhotoImage(file="bomberouge.png")
 Bombe2=PhotoImage(file="bombebleue.png")
 range_bombe1=0
 range_bombe2=0
-nb_bombes1=3
-nb_bombes2=3
+nb_bombes1=1
+nb_bombes2=1
 
 def bombe1(event):
     global nb_bombes1
@@ -202,7 +180,7 @@ def bombe1(event):
         a=xj
         b=yj
         nb_bombes1-=1
-        can.after(2000,explosion,a,b,1)
+        can.after(2500,explosion,a,b,1)
 
 def bombe2(event):
     global nb_bombes2
@@ -214,7 +192,7 @@ def bombe2(event):
         a=xj2
         b=yj2
         nb_bombes2-=1
-        can.after(2000,explosion,a,b,2)
+        can.after(2500,explosion,a,b,2)
 
 ### Images des animations de l'explosion ###
 
@@ -248,6 +226,7 @@ def explosion(x,y,joueur):
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
                     bonus_vie(xb,yb)
+                    bonus_recharge(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
                     elif joueur==1:
@@ -275,6 +254,7 @@ def explosion(x,y,joueur):
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
                     bonus_vie(xb,yb)
+                    bonus_recharge(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
                     elif joueur==1:
@@ -302,6 +282,7 @@ def explosion(x,y,joueur):
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
                     bonus_vie(xb,yb)
+                    bonus_recharge(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
                     elif joueur==1:
@@ -329,6 +310,7 @@ def explosion(x,y,joueur):
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
                     bonus_bombe(xb,yb)
                     bonus_vie(xb,yb)
+                    bonus_recharge(xb,yb)
                     if joueur==2:
                         can.create_image(xb,yb,anchor=NW,image=explosionbleue2,tags='explosionbleue')
                     elif joueur==1:
@@ -351,11 +333,11 @@ def explosion(x,y,joueur):
     if joueur==1:       
         can.delete(can.find_withtag('Bombe1')[0])
         can.create_image(x,y,anchor=NW,image=explosionrouge1,tags='explosionrouge')
-        can.after(1000,destruction_animation_explosion,1)
+        can.after(500,destruction_animation_explosion,1)
     if joueur==2:
         can.delete(can.find_withtag('Bombe2')[0])
         can.create_image(x,y,anchor=NW,image=explosionbleue1,tags='explosionbleue')
-        can.after(1000,destruction_animation_explosion,2)
+        can.after(500,destruction_animation_explosion,2)
     
 
 def destruction_animation_explosion(joueur):
@@ -370,7 +352,7 @@ Bombe_bonus=PhotoImage(file="bonus_bombe.png")
 def bonus_bombe(x,y):
     global range_bombe1,range_bombe2,xj,yj,xj2,yj2
     a=randint(0,100)
-    if a<=5:
+    if a<=7:
         can.create_image(x,y,image=Bombe_bonus,anchor=NW,tags="bb")
 
         
@@ -399,45 +381,13 @@ def verif_bonus_bombe1():
                 range_bombe2+=1
     if len(destroy)==1:
         can.delete(destroy[0])
-   
-trap1_bonus=PhotoImage(file="trap1.png")
-def trap1(event):
-    can.create_image(xj,yj,image=trap1_bonus,anchor=NW,tags="tb1")
-
-trap2_bonus=PhotoImage(file="trap2.png")
-def trap2(event):
-    can.create_image(xj2,yj2,image=trap2_bonus,anchor=NW,tags="tb2")
-
-def verif_trap1():
-    global xj2,yj2
-    destroy=[]
-    a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
-    b=can.find_withtag('tb1')
-    for i in range (len(a)):
-        for j in range (len(b)):
-            if  a[i]==b[j]:
-                destroy.append(b[j])
-    if len(destroy)==1:
-        can.delete(destroy[0])
-    
-def verif_trap2():
-    global xj,yj
-    destroy=[]
-    a=can.find_enclosed(xj,yj,xj+50,yj+50)
-    b=can.find_withtag('tb2')
-    for i in range (len(a)):
-        for j in range (len(b)):
-            if  a[i]==b[j]:
-                destroy.append(b[j])
-    if len(destroy)==1:
-        can.delete(destroy[0])
 
 vie_bonus=PhotoImage(file="vie.png")
 
 def bonus_vie(x,y):
     global pvj1,pvj2,xj,yj,xj2,yj2
     a=randint(0,100)
-    if a<=3:
+    if a<=2:
         can.create_image(x,y,image=vie_bonus,anchor=NW,tags="bv")
         
 def verif_bonus_vie():
@@ -465,6 +415,40 @@ def verif_bonus_vie1():
                 rajoute_vie(2)
     if len(destroy)==1:
         can.delete(destroy[0])
+
+recharge_bonus=PhotoImage(file="bonus_recharge.png")
+
+def bonus_recharge(x,y):
+    a=randint(0,100)
+    if a<=7:
+        can.create_image(x,y,image=recharge_bonus,anchor=NW,tags='br')
+
+def verif_bonus_recharge():
+    global xj,yj,nb_bombes1
+    destroy=[]
+    a=can.find_enclosed(xj,yj,xj+50,yj+50)
+    b=can.find_withtag('br')
+    for i in range (len(a)):
+        for j in range (len(b)):
+            if  a[i]==b[j]:
+                destroy.append(b[j])
+                nb_bombes1+=1
+    if len(destroy)==1:
+        can.delete(destroy[0])
+
+def verif_bonus_recharge1():
+    global xj,yj,nb_bombes2
+    destroy=[]
+    a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
+    b=can.find_withtag('br')
+    for i in range (len(a)):
+        for j in range (len(b)):
+            if  a[i]==b[j]:
+                destroy.append(b[j])
+                nb_bombes2+=1
+    if len(destroy)==1:
+        can.delete(destroy[0])
+        
                 
 ### Personnages / joueurs ###
 
@@ -502,8 +486,8 @@ def animdroite(event): # déplace le joueur vers la droite
         xj+=50
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
-        verif_trap2()
         verif_bonus_vie()
+        verif_bonus_recharge()
 
 def animgauche(event): # déplace le joueur1 vers la gauche
     global xj,yj
@@ -519,8 +503,8 @@ def animgauche(event): # déplace le joueur1 vers la gauche
         xj-=50
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
-        verif_trap2()
         verif_bonus_vie()
+        verif_bonus_recharge()
 
 
 def animbas(event): # déplace le joueur1 vers le bas
@@ -537,8 +521,8 @@ def animbas(event): # déplace le joueur1 vers le bas
         yj+=50
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
-        verif_trap2()
         verif_bonus_vie()
+        verif_bonus_recharge()
 
 def animhaut(event): # déplace le joueur1 vers le haut
     global xj,yj
@@ -554,8 +538,8 @@ def animhaut(event): # déplace le joueur1 vers le haut
         yj-=50
         can.coords("perso",xj,yj)
         verif_bonus_bombe()
-        verif_trap2()
         verif_bonus_vie()
+        verif_bonus_recharge()
 
     ### Joueur 2 ###
 
@@ -575,8 +559,8 @@ def animdroite2(event): # déplace le joueur2 vers la droite
         xj2+=50
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
-        verif_trap1()
         verif_bonus_vie1()
+        verif_bonus_recharge1()
 
 def animgauche2(event): # déplace le joueur2 vers la gauche
     global xj2,yj2
@@ -592,8 +576,8 @@ def animgauche2(event): # déplace le joueur2 vers la gauche
         xj2-=50
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
-        verif_trap1()
         verif_bonus_vie1()
+        verif_bonus_recharge1()
 
 def animbas2(event): # déplace le joueur2 vers le bas
     global xj2,yj2
@@ -609,8 +593,8 @@ def animbas2(event): # déplace le joueur2 vers le bas
         yj2+=50
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
-        verif_trap1()
         verif_bonus_vie1()
+        verif_bonus_recharge1()
 
 def animhaut2(event): # déplace le joueur2 vers le haut
     global xj2,yj2,place2
@@ -626,25 +610,27 @@ def animhaut2(event): # déplace le joueur2 vers le haut
         yj2-=50
         can.coords("perso2",xj2,yj2)
         verif_bonus_bombe1()
-        verif_trap1()
         verif_bonus_vie1()
+        verif_bonus_recharge1()
 	
 ### Programme ###
 
 ## Fenêtre du menu ##
+
 can.bind("<Button-1>",menu)
 score=can
 ## Fenêtre du jeu ##
+
 Quitter=Button(fen,text="Quitter",command=fen.quit)
 Quitter.pack(side=BOTTOM)
-## Ecran de game over ##
+
+
 ## Commandes joueur 1 ##
 fen.bind("<KeyRelease-Left>",animgauche)
 fen.bind("<KeyRelease-Right>",animdroite)
 fen.bind("<KeyRelease-Up>",animhaut)
 fen.bind("<KeyRelease-Down>",animbas)
 fen.bind("<Key-Return>",bombe1)
-fen.bind("<KeyRelease-a>",trap2)
 
 ## Commandes joueur 2 ##
 fen.bind("<KeyRelease-q>",animgauche2)
@@ -652,7 +638,6 @@ fen.bind("<KeyRelease-d>",animdroite2)
 fen.bind("<KeyRelease-z>",animhaut2)
 fen.bind("<KeyRelease-s>",animbas2)
 fen.bind("<space>",bombe2)
-fen.bind("<KeyRelease-0>",trap1)
 
 fen.mainloop()
 fen.destroy() 
