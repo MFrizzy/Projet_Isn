@@ -23,9 +23,11 @@ can.create_image(2,2,image=MENU,anchor=NW,tags="menu")
 
 
 def menu(event):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     :event permet de détecter le clic de la souris.
+    #                On regarde la position du clic pour créer des espaces cliquables, pour déterminer des boutons.
+    # En sortie     :Rien
+    # Effet de bord :Dans la première condition, le clic démarre la partie,
+    #                dans la deuxième, on quitte le jeu.
     global x,y,jouer
     x,y=event.x,event.y
     if 107<=event.x<=443 and 160<=event.y<=200 and gamestarted==False:
@@ -35,7 +37,7 @@ def menu(event):
         print("Quitter")
         fen.destroy()
 
-#PlaySound("musique.wav", SND_ASYNC)
+PlaySound("musique.wav", SND_ASYNC)
 
 ### Initialisation de la fenêtre de jeu ###
 herbe=PhotoImage(file="herbe.png")
