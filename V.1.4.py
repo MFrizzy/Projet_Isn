@@ -38,13 +38,16 @@ def menu(event):
 herbe=PhotoImage(file="herbe.png")
 def startgame():
 
-    global gamestarted,score
+    global gamestarted,score,id_joueur1,id_joueur2
     gamestarted=True
     can.delete("menu")
     can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
     dessiner_map()
     personnages()
+    id_joueur1=can.find_withtag('perso')[0]
+    id_joueur2=can.find_withtag('perso2')[0]
+    print(id_joueur1,id_joueur2)
     score=Canvas(fen,width=550,height=200,bg="white")
     score.pack(side=BOTTOM)
     score.create_text(70,75,text="Joueur1")
@@ -70,32 +73,48 @@ pvj1=3
 pvj2=3
 
 def jaugedeviej1():
-    global pvj1,score,coeur
-    pvj1-=1
-    if pvj1==2:
-        score.create_rectangle(100,50,150,100,fill="white",tags="11")# premier carré j1
-    if pvj1==1:
-        score.create_rectangle(150,50,200,100,fill="white",tags="12")#deuxièmre carré j1
-    if pvj1==0:
-        score.create_rectangle(200,50,250,100,fill="white",tags="13")#troisième carré j1
-
-
-    if pvj1==2 and coeur==1:
-        score.delete("11")
-    if pvj1==1 and coeur==1:
-        score.delete("12")
-    if pvj1==0 and coeur==1:
-        score.delete("13")
+    enleve_vie(1)
 
 def jaugedeviej2():
-    global pvj2,score
-    pvj2-=1
+    enleve_vie(2)
+
+def enleve_vie(joueur):
+    global pvj1,pvj2,score,id_joueur1,id_joueur2
+    if joueur==1:
+        pvj1-=1
+    elif joueur==2:
+        pvj2-=1
+    if pvj1==2:
+        score.create_rectangle(100,50,150,100,fill="white")# premier carré j1
+    if pvj1==1:
+        score.create_rectangle(150,50,200,100,fill="white")#deuxièmre carré j1
+    if pvj1==0:
+        score.create_rectangle(200,50,250,100,fill="white")#troisième carré j1
+        can.delete(id_joueur1)
+        print('Le joueur 2 a gagné')
     if pvj2==2:
         score.create_rectangle(100,100,150,150,fill="white")
     if pvj2==1:
         score.create_rectangle(150,100,200,150,fill="white")
     if pvj2==0:
         score.create_rectangle(200,100,250,150,fill="white")
+        can.delete(id_joueur2)
+        print('Le joueur 1 a gagné')
+
+def rajoute_vie(joueur):
+    global pvj1,pvj2,score
+    if joueur==1:
+        pvj1+=1
+    elif joueur==2:
+        pvj2+=1
+    if pvj1==3:
+        score.create_rectangle(100,50,150,100,fill="red")
+    if pvj1==2:
+        score.create_rectangle(150,50,200,100,fill="red")
+    if pvj2==3:
+        score.create_rectangle(100,100,150,150,fill="blue")    
+    if pvj2==2:
+        score.create_rectangle(150,100,200,150,fill="blue")
 
 ### Creation map ###
 
@@ -142,8 +161,6 @@ blocs=PhotoImage(file="blocs.png")
 def ajouter_bloc(x,y):
     can.create_image(x*50,y*50,image=blocs,anchor=NW,tags="blocs")
 
-
-
 ### Bombes ###
 
 Bombe1=PhotoImage(file="bomberouge.png")
@@ -170,7 +187,7 @@ def bombe2(event):
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur
     #                    puis explosion au bout d'une seconde
-    if nb_bombes2<0:
+    if nb_bombes2>0:
         can.create_image(xj2,yj2,anchor=NW,image=Bombe2,tags='Bombe2')
         a=xj2
         b=yj2
@@ -187,7 +204,7 @@ explosionrouge2=PhotoImage(file='explosionrouge2.png')
 explosionrouge3=PhotoImage(file='explosionrouge3.png')
 
 def explosion(x,y,joueur):
-    global Victoire, range_bombe1,range_bombe2,nb_bombes1,nb_bombes2
+    global Victoire, range_bombe1,range_bombe2,nb_bombes1,nb_bombes2,id_joueur1,id_joueur2
     destroy=[]
     if joueur==1:
         bonus=range_bombe1
@@ -217,6 +234,10 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_bas=True
+            if id_joueur1==can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]:
+                enleve_vie(1)
+            elif id_joueur2==can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]:
+                enleve_vie(2)          
         if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==2:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         elif len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==1:
@@ -240,6 +261,10 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_droite=True
+            if id_joueur1==can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]:
+                enleve_vie(1)
+            elif id_joueur2==can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]:
+                enleve_vie(2)
         if len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==2:
             can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         elif len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==1:
@@ -263,6 +288,10 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_haut=True
+            if id_joueur1==can.find_overlapping(x,y,x+50,y-1-a*50)[i]:
+                enleve_vie(1)
+            elif id_joueur2==can.find_overlapping(x,y,x+50,y-1-a*50)[i]:
+                enleve_vie(2)
         if len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==2:
             can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         elif len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==1:
@@ -286,6 +315,10 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x-1-a*50,y,x,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_gauche=True
+            if id_joueur1==can.find_overlapping(x-1-a*50,y,x,y+50)[i]:
+                enleve_vie(1)
+            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x,y+50)[i]:
+                enleve_vie(2)
         if len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==2:
             can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         elif len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==1:
@@ -394,8 +427,7 @@ def verif_bonus_vie():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                coeur+=1
-                pvj1+=1
+                rajoute_vie(1)
     if len(destroy)==1:
         can.delete(destroy[0])
 
@@ -408,7 +440,7 @@ def verif_bonus_vie1():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                pvj2+=1
+                rajoute_vie(2)
     if len(destroy)==1:
         can.delete(destroy[0])
                 
