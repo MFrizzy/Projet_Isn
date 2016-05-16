@@ -62,6 +62,8 @@ def startgame():
     score.create_rectangle(100,100,150,150,fill="blue")
     score.create_rectangle(150,100,200,150,fill="blue")
     score.create_rectangle(200,100,250,150,fill="blue")
+    score.create_image(250,50,image=Bombe1,anchor=NW)
+    score.create_image(250,100,image=Bombe2,anchor=NW)
     viej1=Button(fen,text="viej1 -1",command=jaugedeviej1)
     viej1.pack(side=BOTTOM)
     viej2=Button(fen,text="viej2 -1",command=jaugedeviej2)
@@ -134,10 +136,14 @@ def rajoute_vie(joueur):
         pvj1+=1
     elif joueur==2:
         pvj2+=1
+    if pvj1==4:
+        pvj1-=1
     if pvj1==3:
         score.create_rectangle(100,50,150,100,fill="red")
     if pvj1==2:
         score.create_rectangle(150,50,200,100,fill="red")
+    if pvj2==4:
+        pvj2-=1
     if pvj2==3:
         score.create_rectangle(100,100,150,150,fill="blue")    
     if pvj2==2:
@@ -518,6 +524,7 @@ def verif_bonus_recharge():
             if  a[i]==b[j]:
                 destroy.append(b[j])
                 nb_bombes1+=1
+                score.create_image(200+nb_bombes1*50,50,image=Bombe1,anchor=NW)
     if len(destroy)==1:
         can.delete(destroy[0])
 
@@ -534,6 +541,7 @@ def verif_bonus_recharge1():
             if  a[i]==b[j]:
                 destroy.append(b[j])
                 nb_bombes2+=1
+                score.create_image(200+nb_bombes2*50,100,image=Bombe2,anchor=NW) 
     if len(destroy)==1:
         can.delete(destroy[0])
         
