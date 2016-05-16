@@ -168,8 +168,7 @@ def perdu(event):
 
 def dessiner_map():
     # pas d'entrée, ni de sortie
-    # effet de bord : Création d'une map composé des briques déstructibles et de blocs indestructibles
-    #                 avec 2 point de spawn de joueur en haut à gauche et en bas à droite
+    # effet de bord : Création d'une map uniquement composée des fonctions ajouter_brique et ajouter_bloc 
     global x,y
     for i in range(-1,12):
         for j in range(-1,12,12):
@@ -202,17 +201,17 @@ def dessiner_map():
 ## Briques ##
 briques=PhotoImage(file="briques.png")
 def ajouter_brique(x,y):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : x et y respectivement l'abcisse et l'ordonnée de la brique 
+    # En sortie     : Rien 
+    # Effet de bord : Pose une image de la brique aux coordonnées souhaitées 
     can.create_image(x*50,y*50,image=briques,anchor=NW,tags="briques")
 
 ## Blocs ##
 blocs=PhotoImage(file="blocs.png")
 def ajouter_bloc(x,y):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : x et y respectivement l'abcisse et l'ordonnée du bloc 
+    # En sortie     : Rien
+    # Effet de bord : Pose une image du bloc aux coordonnées souhaitées
     can.create_image(x*50,y*50,image=blocs,anchor=NW,tags="blocs")
 
 ### Bombes ###
@@ -429,39 +428,42 @@ coeur=0
 Bombe_bonus=PhotoImage(file="bonus_range.png")
 
 def bonus_bombe(x,y):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : x et y respectivement l'abcisse et l'ordonnée du bonus
+    # En sortie     : Rien
+    # Effet de bord : Crée une image du bonus en (x,y) 
     global range_bombe1,range_bombe2,xj,yj,xj2,yj2
     a=randint(0,100)
-    if a<=10:
+    if a<=8: # Représente 8 % de chance
         can.create_image(x,y,image=Bombe_bonus,anchor=NW,tags="bb")
+        
 blanc=PhotoImage(file="blanc.png")
         
 def verif_bonus_bombe():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien
+    # Effet de bord : Supprime l'image, augmente la portée de 1 du joueur 1 et affiche la nouvelle porté du joueur 1 dans le canvas score
     global xj,yj,range_bombe1,range_bombe2
     destroy=[]
-    a=can.find_enclosed(xj,yj,xj+50,yj+50)
-    b=can.find_withtag('bb')
+    a=can.find_enclosed(xj,yj,xj+50,yj+50) # donne l'identifiant numérique du joueur 1 
+    b=can.find_withtag('bb') # donne la liste d'identifiants des items ayant le tags 'bb'
     for i in range (len(a)):
-        for j in range (len(b)):
-            if  a[i]==b[j]:
-                destroy.append(b[j])
+        for j in range (len(b)):  
+            if  a[i]==b[j]: # vérifie si le joueur est sur l'image 
+                destroy.append(b[j]) # ajoute l'identifiant numérique de l'image dans une liste 
                 range_bombe1+=1
-                score.create_image(500,50,image=blanc,anchor=NW)
+                score.create_image(500,50,image=blanc,anchor=NW) # Je ne supprime pas le dernier chiffre mais j'ajoute une image blanche pour réécrire dessus
                 score.create_text(500,68,text="Portée")
                 score.create_text(500,82,text="Bombe")
                 score.create_text(540,75,text=range_bombe1+1)
     if len(destroy)==1:
-        can.delete(destroy[0])
+        can.delete(destroy[0]) # supprime l'image du canvas 
 
+
+# Même fonction que la précédante mais applicable pour le joueur 2
 def verif_bonus_bombe1():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien 
+    # Effet de bord : Supprime l'image, augmente la portée de 1 du joueur 2 et affiche la nouvelle porté du joueur 2 dans le canvas score
     global xj2,yj2,range_bombe1,range_bombe2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -482,18 +484,18 @@ def verif_bonus_bombe1():
 vie_bonus=PhotoImage(file="vie.png")
 
 def bonus_vie(x,y):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : x et y respectivement l'abcisse et l'ordonnée du bonus
+    # En sortie     : Rien 
+    # Effet de bord : Crée une image du bonus en (x,y)
     global pvj1,pvj2,xj,yj,xj2,yj2
     a=randint(0,100)
-    if a<=2:
+    if a<=2: # Représente 2% de chance 
         can.create_image(x,y,image=vie_bonus,anchor=NW,tags="bv")
         
 def verif_bonus_vie():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien
+    # Effet de bord : Supprime l'image du coeur et rajoute une vie au joueur 1 dans le canvas score
     global xj,yj,pvj1,coeur
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
@@ -502,14 +504,16 @@ def verif_bonus_vie():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                rajoute_vie(1)
+                rajoute_vie(1) # cette fonction ajoute une vie au joueur  1 et affiche une nouvelle vie dans le canvas create
     if len(destroy)==1:
         can.delete(destroy[0])
 
+
+# Même fonction que la précédante mais applicable pour le joueur 2
 def verif_bonus_vie1():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien
+    # Effet de bord : Supprime l'image du coeur et rajoute une vie au joueur 2 dans le canvas score
     global xj2,yj2,pvj2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -518,24 +522,24 @@ def verif_bonus_vie1():
         for j in range (len(b)):
             if  a[i]==b[j]:
                 destroy.append(b[j])
-                rajoute_vie(2)
+                rajoute_vie(2) # cette fonction ajoute une vie au joueur  2 et affiche une nouvelle vie dans le canvas create
     if len(destroy)==1:
         can.delete(destroy[0])
 
 recharge_bonus=PhotoImage(file="bonus_recharge.png")
 
 def bonus_recharge(x,y):
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : x et y respectivement l'abcisse et l'ordonnée du bonus
+    # En sortie     : Rien 
+    # Effet de bord : Crée une image du bonus en (x,y)
     a=randint(0,100)
-    if a<=7:
+    if a<=8: # Représente 8% de chance
         can.create_image(x,y,image=recharge_bonus,anchor=NW,tags='br')
 
 def verif_bonus_recharge():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien 
+    # Effet de bord : Supprime l'image, augmente le nombre de bombes que le joueur 1 peut poser en même temps et affiche une nouvelle bombe dans le canvas score
     global xj,yj,nb_bombes1
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
@@ -545,16 +549,18 @@ def verif_bonus_recharge():
             if  a[i]==b[j]:
                 destroy.append(b[j])
                 nb_bombes1+=1
-                if nb_bombes1==5:
+                if nb_bombes1==5: # Permet au joueur de poser un maximum de  4 bombes à la fois 
                     nb_bombes1-=1
-                score.create_image(200+nb_bombes1*50,50,image=Bombe1,anchor=NW)
-    if len(destroy)==1:
+                score.create_image(200+nb_bombes1*50,50,image=Bombe1,anchor=NW) # pose des bombes les une à côtés des autres représentant
+    if len(destroy)==1:                                                          # le nombre de bombe que le joueur1 peut poser en même temps #
         can.delete(destroy[0])
 
+
+# Même fonction que la précédante mais applicable pour le joueur 2
 def verif_bonus_recharge1():
-    # En entrée     :
-    # En sortie     :
-    # Effet de bord :
+    # En entrée     : Rien 
+    # En sortie     : Rien
+    # Effet de bord : Supprime l'image, augmente le nombre de bombes que le joueur 2 peut poser en même temps et affiche une nouvelle bombe dans le canvas score
     global xj,yj,nb_bombes2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -611,9 +617,9 @@ def animdroite(event): #toutes les fonctions de déplacement fonctionnent de la 
     if a==True:#si non le joueur se déplace
         xj+=50
         can.coords("perso",xj,yj) #déplace le personnage (joueur)
-        verif_bonus_bombe()
-        verif_bonus_vie()
-        verif_bonus_recharge()
+        verif_bonus_bombe() # vérifie si le joueur 1 est sur le bonus 
+        verif_bonus_vie() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_recharge() # vérifie si le joueur 1 est sur le bonus
 
 def animgauche(event): 
     # En entrée     : appui sur la touche flèche gauche
@@ -631,9 +637,9 @@ def animgauche(event):
     if a==True:
         xj-=50
         can.coords("perso",xj,yj)
-        verif_bonus_bombe()
-        verif_bonus_vie()
-        verif_bonus_recharge()
+        verif_bonus_bombe() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_vie() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_recharge() # vérifie si le joueur 1 est sur le bonus
 
 
 def animbas(event): # déplace le joueur1 vers le bas
@@ -652,9 +658,9 @@ def animbas(event): # déplace le joueur1 vers le bas
     if a==True:
         yj+=50
         can.coords("perso",xj,yj)
-        verif_bonus_bombe()
-        verif_bonus_vie()
-        verif_bonus_recharge()
+        verif_bonus_bombe() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_vie() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_recharge() # vérifie si le joueur 1 est sur le bonus
 
 def animhaut(event): # déplace le joueur1 vers le haut
     # En entrée     : appui sur la touche flèche haut
@@ -672,9 +678,9 @@ def animhaut(event): # déplace le joueur1 vers le haut
     if a==True:
         yj-=50
         can.coords("perso",xj,yj)
-        verif_bonus_bombe()
-        verif_bonus_vie()
-        verif_bonus_recharge()
+        verif_bonus_bombe() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_vie() # vérifie si le joueur 1 est sur le bonus
+        verif_bonus_recharge() # vérifie si le joueur 1 est sur le bonus
 
     ### Joueur 2 ###
 
@@ -696,9 +702,9 @@ def animdroite2(event): # déplace le joueur2 vers la droite
     if a==True:
         xj2+=50
         can.coords("perso2",xj2,yj2)
-        verif_bonus_bombe1()
-        verif_bonus_vie1()
-        verif_bonus_recharge1()
+        verif_bonus_bombe1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_vie1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_recharge1() # vérifie si le joueur 2 est sur le bonus
 
 def animgauche2(event): # déplace le joueur2 vers la gauche
     # En entrée     :
@@ -716,9 +722,9 @@ def animgauche2(event): # déplace le joueur2 vers la gauche
     if a==True:
         xj2-=50
         can.coords("perso2",xj2,yj2)
-        verif_bonus_bombe1()
-        verif_bonus_vie1()
-        verif_bonus_recharge1()
+        verif_bonus_bombe1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_vie1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_recharge1() # vérifie si le joueur 2 est sur le bonus
 
 def animbas2(event): # déplace le joueur2 vers le bas
     # En entrée     :
@@ -736,9 +742,9 @@ def animbas2(event): # déplace le joueur2 vers le bas
     if a==True:
         yj2+=50
         can.coords("perso2",xj2,yj2)
-        verif_bonus_bombe1()
-        verif_bonus_vie1()
-        verif_bonus_recharge1()
+        verif_bonus_bombe1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_vie1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_recharge1() # vérifie si le joueur 2 est sur le bonus
 
 def animhaut2(event): # déplace le joueur2 vers le haut
     # En entrée     :
@@ -756,9 +762,9 @@ def animhaut2(event): # déplace le joueur2 vers le haut
     if a==True:
         yj2-=50
         can.coords("perso2",xj2,yj2)
-        verif_bonus_bombe1()
-        verif_bonus_vie1()
-        verif_bonus_recharge1()
+        verif_bonus_bombe1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_vie1() # vérifie si le joueur 2 est sur le bonus
+        verif_bonus_recharge1() # vérifie si le joueur 2 est sur le bonus
 	
 ### Programme ###
 
