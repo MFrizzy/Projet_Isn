@@ -359,7 +359,7 @@ def explosion(x,y,joueur):
                     explosion_haut=True
             if id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(1)
-                an.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
+                can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
             elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(2)
                 can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
