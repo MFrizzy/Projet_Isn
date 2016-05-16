@@ -23,6 +23,9 @@ can.create_image(2,2,image=MENU,anchor=NW,tags="menu")
 
 
 def menu(event):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global x,y,jouer
     x,y=event.x,event.y
     if 107<=event.x<=443 and 160<=event.y<=200 and gamestarted==False:
@@ -37,7 +40,9 @@ def menu(event):
 ### Initialisation de la fenêtre de jeu ###
 herbe=PhotoImage(file="herbe.png")
 def startgame():
-
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global gamestarted,score,id_joueur1,id_joueur2
     gamestarted=True
     can.delete("menu")
@@ -73,12 +78,21 @@ pvj1=3
 pvj2=3
 
 def jaugedeviej1():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     enleve_vie(1)
 
 def jaugedeviej2():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     enleve_vie(2)
 
 def enleve_vie(joueur):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global pvj1,pvj2,score,id_joueur1,id_joueur2
     if joueur==1:
         pvj1-=1
@@ -102,6 +116,9 @@ def enleve_vie(joueur):
         print('Le joueur 1 a gagné')
 
 def rajoute_vie(joueur):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global pvj1,pvj2,score
     if joueur==1:
         pvj1+=1
@@ -154,11 +171,17 @@ def dessiner_map():
 ## Briques ##
 briques=PhotoImage(file="briques.png")
 def ajouter_brique(x,y):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     can.create_image(x*50,y*50,image=briques,anchor=NW,tags="briques")
 
 ## Blocs ##
 blocs=PhotoImage(file="blocs.png")
 def ajouter_bloc(x,y):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     can.create_image(x*50,y*50,image=blocs,anchor=NW,tags="blocs")
 
 ### Bombes ###
@@ -171,6 +194,9 @@ nb_bombes1=1
 nb_bombes2=1
 
 def bombe1(event):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global nb_bombes1
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur,
@@ -183,6 +209,9 @@ def bombe1(event):
         can.after(2500,explosion,a,b,1)
 
 def bombe2(event):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global nb_bombes2
     # en entrée : event
     # en effet de bord : création d'une 'bombe' à la position du joueur
@@ -204,6 +233,9 @@ explosionrouge2=PhotoImage(file='explosionrouge2.png')
 explosionrouge3=PhotoImage(file='explosionrouge3.png')
 
 def explosion(x,y,joueur):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global Victoire, range_bombe1,range_bombe2,nb_bombes1,nb_bombes2,id_joueur1,id_joueur2
     destroy=[]
     if joueur==1:
@@ -341,6 +373,9 @@ def explosion(x,y,joueur):
     
 
 def destruction_animation_explosion(joueur):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     if joueur==2: 
         can.delete('explosionbleue')
     elif joueur==1:
@@ -350,6 +385,9 @@ coeur=0
 Bombe_bonus=PhotoImage(file="bonus_bombe.png")
 
 def bonus_bombe(x,y):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global range_bombe1,range_bombe2,xj,yj,xj2,yj2
     a=randint(0,100)
     if a<=7:
@@ -357,6 +395,9 @@ def bonus_bombe(x,y):
 
         
 def verif_bonus_bombe():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj,range_bombe1,range_bombe2
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
@@ -370,6 +411,9 @@ def verif_bonus_bombe():
         can.delete(destroy[0])
 
 def verif_bonus_bombe1():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2,range_bombe1,range_bombe2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -385,12 +429,18 @@ def verif_bonus_bombe1():
 vie_bonus=PhotoImage(file="vie.png")
 
 def bonus_vie(x,y):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global pvj1,pvj2,xj,yj,xj2,yj2
     a=randint(0,100)
     if a<=2:
         can.create_image(x,y,image=vie_bonus,anchor=NW,tags="bv")
         
 def verif_bonus_vie():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj,pvj1,coeur
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
@@ -404,6 +454,9 @@ def verif_bonus_vie():
         can.delete(destroy[0])
 
 def verif_bonus_vie1():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2,pvj2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -419,11 +472,17 @@ def verif_bonus_vie1():
 recharge_bonus=PhotoImage(file="bonus_recharge.png")
 
 def bonus_recharge(x,y):
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     a=randint(0,100)
     if a<=7:
         can.create_image(x,y,image=recharge_bonus,anchor=NW,tags='br')
 
 def verif_bonus_recharge():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj,nb_bombes1
     destroy=[]
     a=can.find_enclosed(xj,yj,xj+50,yj+50)
@@ -437,6 +496,9 @@ def verif_bonus_recharge():
         can.delete(destroy[0])
 
 def verif_bonus_recharge1():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj,nb_bombes2
     destroy=[]
     a=can.find_enclosed(xj2,yj2,xj2+50,yj2+50)
@@ -462,6 +524,9 @@ xj2,yj2=500,500
 joueur2=PhotoImage(file="joueur2.png")
 
 def personnages():
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     # Personnage 1 #
     place=[int(xj/50),int(yj/50)] # position du personnage
     perso=can.create_image(xj,yj,anchor=NW,image=joueur1,tags="perso")
@@ -473,6 +538,9 @@ def personnages():
 ## Mouvements Joueur 1 ##
     
 def animdroite(event): # déplace le joueur vers la droite
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj
     a=True
     for i in range (len(can.find_enclosed(xj+49,yj-1,xj+101,yj+51))):
@@ -490,6 +558,9 @@ def animdroite(event): # déplace le joueur vers la droite
         verif_bonus_recharge()
 
 def animgauche(event): # déplace le joueur1 vers la gauche
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj
     a=True
     for i in range (len(can.find_enclosed(xj+1,yj-1,xj-51,yj+51))):
@@ -508,6 +579,9 @@ def animgauche(event): # déplace le joueur1 vers la gauche
 
 
 def animbas(event): # déplace le joueur1 vers le bas
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj
     a=True
     for i in range (len(can.find_enclosed(xj-1,yj+49,xj+51,yj+101))):
@@ -525,6 +599,9 @@ def animbas(event): # déplace le joueur1 vers le bas
         verif_bonus_recharge()
 
 def animhaut(event): # déplace le joueur1 vers le haut
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj,yj
     a=True
     for i in range (len(can.find_enclosed(xj-1,yj+1,xj+51,yj-51))):
@@ -546,6 +623,9 @@ def animhaut(event): # déplace le joueur1 vers le haut
 ## Mouvements Joueur 2 ##
 
 def animdroite2(event): # déplace le joueur2 vers la droite
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2
     a=True
     for i in range (len(can.find_enclosed(xj2+49,yj2-1,xj2+101,yj2+51))):
@@ -563,6 +643,9 @@ def animdroite2(event): # déplace le joueur2 vers la droite
         verif_bonus_recharge1()
 
 def animgauche2(event): # déplace le joueur2 vers la gauche
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2
     a=True
     for i in range (len(can.find_enclosed(xj2+1,yj2-1,xj2-51,yj2+51))):
@@ -580,6 +663,9 @@ def animgauche2(event): # déplace le joueur2 vers la gauche
         verif_bonus_recharge1()
 
 def animbas2(event): # déplace le joueur2 vers le bas
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2
     a=True
     for i in range (len(can.find_enclosed(xj2-1,yj2+49,xj2+51,yj2+101))):
@@ -597,6 +683,9 @@ def animbas2(event): # déplace le joueur2 vers le bas
         verif_bonus_recharge1()
 
 def animhaut2(event): # déplace le joueur2 vers le haut
+    # En entrée     :
+    # En sortie     :
+    # Effet de bord :
     global xj2,yj2,place2
     a=True
     for i in range (len(can.find_enclosed(xj2-1,yj2+1,xj2+51,yj2-51))):
