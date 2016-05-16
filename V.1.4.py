@@ -45,14 +45,13 @@ def startgame():
     # Effet de bord :
     global gamestarted,score,id_joueur1,id_joueur2
     gamestarted=True
-    can.delete("menu")
+    can.delete(ALL)
     can.create_image(0,0,image=herbe,anchor=NW,tags="bg")
     fen.title('BOMBERMAN')
     dessiner_map()
     personnages()
     id_joueur1=can.find_withtag('perso')[0]
     id_joueur2=can.find_withtag('perso2')[0]
-    print(id_joueur1,id_joueur2)
     score=Canvas(fen,width=550,height=200,bg="white")
     score.pack(side=BOTTOM)
     score.create_text(70,75,text="Joueur1")
@@ -277,9 +276,9 @@ def explosion(x,y,joueur):
     explosion_haut=False
     explosion_gauche=False
     while explosion_bas==False and a<=bonus:
-        for i in range(len(can.find_overlapping(x,y+50,x+50,y+51+a*50))):
+        for i in range(len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))):
             for j in range(len(can.find_withtag('briques'))):
-                if can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]==can.find_withtag('briques')[j]:
+                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('briques')[j]:
                     explosion_bas=True
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
@@ -292,11 +291,11 @@ def explosion(x,y,joueur):
                         can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
-                if can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
+                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_bas=True
-            if id_joueur1==can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]:
+            if id_joueur1==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
                 enleve_vie(1)
-            elif id_joueur2==can.find_overlapping(x,y+50,x+50,y+51+a*50)[i]:
+            elif id_joueur2==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
                 enleve_vie(2)          
         if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==2:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
@@ -305,9 +304,9 @@ def explosion(x,y,joueur):
         a+=1
     a=0
     while explosion_droite==False and a<=bonus:      
-        for i in range(len(can.find_overlapping(x+50,y,x+51+50*a,y+50))):
+        for i in range(len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))):
             for j in range(len(can.find_withtag('briques'))):
-                if can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]==can.find_withtag('briques')[j]:
+                if can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]==can.find_withtag('briques')[j]:
                     explosion_droite=True
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
@@ -320,11 +319,11 @@ def explosion(x,y,joueur):
                         can.create_image(xb,yb,anchor=NW,image=explosionrouge2,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
-                if can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
+                if can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_droite=True
-            if id_joueur1==can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]:
+            if id_joueur1==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
                 enleve_vie(1)
-            elif id_joueur2==can.find_overlapping(x+50,y,x+51+50*a,y+50)[i]:
+            elif id_joueur2==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
                 enleve_vie(2)
         if len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==2:
             can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
@@ -333,9 +332,9 @@ def explosion(x,y,joueur):
         a+=1
     a=0
     while explosion_haut==False and a<=bonus:
-        for i in range(len(can.find_overlapping(x,y,x+50,y-1-a*50))):
+        for i in range(len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))):
             for j in range(len(can.find_withtag('briques'))):
-                if can.find_overlapping(x,y,x+50,y-1-a*50)[i]==can.find_withtag('briques')[j]:
+                if can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]==can.find_withtag('briques')[j]:
                     explosion_haut=True
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
@@ -348,11 +347,11 @@ def explosion(x,y,joueur):
                         can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
-                if can.find_overlapping(x,y,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
+                if can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_haut=True
-            if id_joueur1==can.find_overlapping(x,y,x+50,y-1-a*50)[i]:
+            if id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(1)
-            elif id_joueur2==can.find_overlapping(x,y,x+50,y-1-a*50)[i]:
+            elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
                 enleve_vie(2)
         if len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==2:
             can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
@@ -361,9 +360,9 @@ def explosion(x,y,joueur):
         a+=1
     a=0
     while explosion_gauche==False and a<=bonus:
-        for i in range(len(can.find_overlapping(x-1-a*50,y,x,y+50))):
+        for i in range(len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))):
             for j in range(len(can.find_withtag('briques'))):
-                if can.find_overlapping(x-1-a*50,y,x,y+50)[i]==can.find_withtag('briques')[j]:
+                if can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]==can.find_withtag('briques')[j]:
                     explosion_gauche=True
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
@@ -376,11 +375,11 @@ def explosion(x,y,joueur):
                         can.create_image(xb,yb,anchor=NW,image=explosionrouge2,tags='explosionrouge')
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
-                if can.find_overlapping(x-1-a*50,y,x,y+50)[i]==can.find_withtag('blocs')[k]:
+                if can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_gauche=True
-            if id_joueur1==can.find_overlapping(x-1-a*50,y,x,y+50)[i]:
+            if id_joueur1==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
                 enleve_vie(1)
-            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x,y+50)[i]:
+            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
                 enleve_vie(2)
         if len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==2:
             can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
@@ -556,11 +555,11 @@ def personnages():
     # Effet de bord :
     # Personnage 1 #
     place=[int(xj/50),int(yj/50)] # position du personnage
-    perso=can.create_image(xj,yj,anchor=NW,image=joueur1,tags="perso")
+    perso=can.create_image(0,0,anchor=NW,image=joueur1,tags="perso")
 
     # Personnage 2 #
     place2=[int(xj2/50),int(yj2/50)]
-    perso2=can.create_image(xj2,yj2,anchor=NW,image=joueur2,tags="perso2")
+    perso2=can.create_image(500,500,anchor=NW,image=joueur2,tags="perso2")
     
 ## Mouvements Joueur 1 ##
     
