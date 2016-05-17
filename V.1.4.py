@@ -187,7 +187,6 @@ def perdu(event):
     if 100<=event.x<=200 and 335<=event.y<=385:
         print("rejouer?")
         score.destroy() # Détruit le canvas des scores
-        startgame() # Redémarre le jeu
     # Réinitialisation des variables des joueurs
         pvj1=3
         pvj2=3
@@ -197,6 +196,7 @@ def perdu(event):
         nb_bombes2=1
         xj,yj=0,0 # Coordonnées joueurs
         xj2,yj2=500,500
+        startgame() # Redémarre le jeu
 
 ### Creation map ###
 
@@ -300,36 +300,44 @@ def explosion(x,y,joueur):
     explosion_droite=False
     explosion_haut=False
     explosion_gauche=False
-    for i in range(len(can.find_overlapping(x,y,x+50,y+50))):
-        if id_joueur1==can.find_overlapping(x,y,x+50,y+50)[i]:
+    case_bombe=can.find_overlapping(x,y,x+50,y+50)
+    for i in range(len(case_bombe)):
+        if id_joueur1==case_bombe[i]: # On vérifie si le joueur 1 est sur la bombe
             enleve_vie(1) 
-        elif id_joueur2==can.find_overlapping(x,y,x+50,y+50)[i]:
+        elif id_joueur2==case_bombe[i]: # On vérifie si le joueur 2 est sur la bombe
             enleve_vie(2)
+    # Les commentaires qui suivent sont aussi valables pour toutes les boucles while de cette fonction
     while explosion_bas==False and a<=bonus:
         for i in range(len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))):
             for j in range(len(can.find_withtag('briques'))):
-                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('briques')[j]:
-                    explosion_bas=True
+                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('briques')[j]: # On vérifie si c'est brique
+                    explosion_bas=True # on arrete la boucle while
                     xb=can.bbox(can.find_withtag('briques')[j])[0]
                     yb=can.bbox(can.find_withtag('briques')[j])[1]
-                    bonus_bombe(xb,yb)
-                    bonus_vie(xb,yb)
-                    bonus_recharge(xb,yb)
+                    bonus_bombe(xb,yb) # Apparition du bonus de portée de la bombe
+                    bonus_vie(xb,yb) # Apparition du bonus de vie
+                    bonus_recharge(xb,yb) # Apparition du bonus de bombe maximal
                     if joueur==2:
-                        can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+                        can.create_image(xb,yb,anchor=NW,image=explosionbleue3,tags='explosionbleue') # Affichage de l'animation de l'explosion du joueur 2
                     elif joueur==1:
-                        can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge')
+                        can.create_image(xb,yb,anchor=NW,image=explosionrouge3,tags='explosionrouge') # Affichage de l'animation de l'explosion du joueur 1
                     destroy.append(can.find_withtag('briques')[j])
             for k in range(len(can.find_withtag('blocs'))):
-                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]:
-                    explosion_bas=True
-            if id_joueur1==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
-                enleve_vie(1)
-                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
-            elif id_joueur2==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]:
-                enleve_vie(2)
+                if can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i]==can.find_withtag('blocs')[k]: # On vérifie si c'est un bloc
+                    explosion_bas=True # On arrete la boucle while
+            if id_joueur1==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i] and joueur==1: # On vérifie si le joueur 1 est dans la portée de la bombe
+                enleve_vie(1) # On enleve un coeur au joueur 1
+                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge') # On affiche l'animation de l'explosion sur le joueur 1
+            elif id_joueur1==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i] and joueur==2: # On vérifie si le joueur 1 est dans la portée de la bombe
+                enleve_vie(1) # On enleve un coeur au joueur 1
                 can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
-        if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==2:
+            elif id_joueur2==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i] and joueur==1: # On vérifie si le joueur 2 est dans la portée de la bombe
+                enleve_vie(2) # On enleve un coeur au joueur 2
+                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')# On affiche l'animation de l'explosion sur le joueur 2
+            elif id_joueur2==can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50)[i] and joueur==2: # On vérifie si le joueur 2 est dans la portée de la bombe
+                enleve_vie(2) # On enleve un coeur au joueur 2
+                can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')# On affiche l'animation de l'explosion sur le joueur 2
+        if len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==2: # S'il n'y a que l'image de fond on affiche l'animation de l'explotion
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         elif len(can.find_overlapping(x,y+(a+1)*50,x+50,y+51+a*50))==1 and joueur==1:
             can.create_image(x,y+(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
@@ -353,10 +361,16 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_droite=True
-            if id_joueur1==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
+            if id_joueur1==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i] and joueur==1:
                 enleve_vie(1)
                 can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
-            elif id_joueur2==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i]:
+            elif id_joueur1==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i] and joueur==2:
+                enleve_vie(1)
+                can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+            elif id_joueur2==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i] and joueur==1:
+                enleve_vie(2)
+                can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
+            elif id_joueur2==can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50)[i] and joueur==2:
                 enleve_vie(2)
                 can.create_image(x+(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         if len(can.find_overlapping(x+(a+1)*50,y,x+51+50*a,y+50))==1 and joueur==2:
@@ -383,10 +397,16 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]==can.find_withtag('blocs')[k]:
                     explosion_haut=True
-            if id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
+            if id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i] and joueur==1:
                 enleve_vie(1)
                 can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
-            elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i]:
+            elif id_joueur1==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i] and joueur==2:
+                enleve_vie(1)
+                can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
+            elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i] and joueur==1:
+                enleve_vie(2)
+                can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionrouge3,tags='explosionrouge')
+            elif id_joueur2==can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50)[i] and joueur==2:
                 enleve_vie(2)
                 can.create_image(x,y-(a+1)*50,anchor=NW,image=explosionbleue3,tags='explosionbleue')
         if len(can.find_overlapping(x,y-(a+1)*50,x+50,y-1-a*50))==1 and joueur==2:
@@ -413,10 +433,16 @@ def explosion(x,y,joueur):
             for k in range(len(can.find_withtag('blocs'))):
                 if can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]==can.find_withtag('blocs')[k]:
                     explosion_gauche=True
-            if id_joueur1==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
+            if id_joueur1==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i] and joueur==1:
                 enleve_vie(1)
                 can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
-            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i]:
+            elif id_joueur1==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i] and joueur==2:
+                enleve_vie(1)
+                can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
+            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i] and joueur==1:
+                enleve_vie(2)
+                can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionrouge2,tags='explosionrouge')
+            elif id_joueur2==can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50)[i] and joueur==2:
                 enleve_vie(2)
                 can.create_image(x-(a+1)*50,y,anchor=NW,image=explosionbleue2,tags='explosionbleue')
         if len(can.find_overlapping(x-1-a*50,y,x-(a+1)*50,y+50))==1 and joueur==2:
