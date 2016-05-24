@@ -520,8 +520,7 @@ def verif_bonus_bombe1():
             if  a[i]==b[j]: # Trouve l'id du bonus de bombe
                 destroy.append(b[j]) # ajoute l'identifiant numérique de l'image dans une liste
                 range_bombe2+=1
-                can.delete("txt1")
-                score.create_image(550,50,image=blanc,anchor=NW) # Je ne supprime pas le dernier chiffre mais j'ajoute une image blanche pour réécrire dessus
+                score.create_image(500,100,image=blanc,anchor=NW) # Je ne supprime pas le dernier chiffre mais j'ajoute une image blanche pour réécrire dessus
                 score.create_text(500,118,text="Portée")
                 score.create_text(500,132,text="Bombe")
                 score.create_text(540,125,text=range_bombe2+1)
