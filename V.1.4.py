@@ -286,7 +286,7 @@ def explosion(x,y,joueur):
     #                 Dessine les animations d'explosion et les fait disparaitre
     #                 Enleve une vie au joueur qui est dans la portée de la bombe
     #                 Fait apparaitre aléatoirement des bonus à l'endroit de l'explosion
-    global Victoire, range_bombe1,range_bombe2,nb_bombes1,nb_bombes2,id_joueur1,id_joueur2
+    global range_bombe1,range_bombe2,nb_bombes1,nb_bombes2,id_joueur1,id_joueur2
     destroy=[]
     if joueur==1:
         bonus=range_bombe1 # On assigne a la variable bonus la valeur du bonus de portée du joueur 1
